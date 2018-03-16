@@ -7,7 +7,6 @@
 #Simple input file with iterations between heterodimers
 from Bio.PDB import *
 from Bio import pairwise2
-from Bio.SubsMat import MatrixInfo as matlist
 import sys
 
 #get files
@@ -71,15 +70,18 @@ sup = Superimposer()
 #get the list of atoms to perform the superimposer
 fixed = list(pdb_info[best_alignment[0]]['atoms'])
 moving = list(pdb_info[best_alignment[1]]['atoms'])
+id_m = best_alignment[1][1] #get id for moving structure
 
 sup.set_atoms(fixed, moving)
 
-sup.apply(moving)
+sup.apply(structures[id_m - 1].get_atoms()) #change coordinates for moving structure
 
 #get new structure
-#not working
 pdb_out = "toy_model.pdb"
 
 io = PDBIO()
-io.set_structure(s)
-io.save(pdb_out)
+
+#it only save the last structure
+for s in structures:
+	io.set_structure(s)
+	io.save(pdb_out)
