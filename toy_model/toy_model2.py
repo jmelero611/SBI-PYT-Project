@@ -67,7 +67,6 @@ def align_sequences(dic):
 	gap_extend = -0.5
 	best_aln = []
 	all_aln = []
-	ids_to_model = []
 
 	#Select sequences to align
 	for i in range(n-1):
@@ -77,8 +76,6 @@ def align_sequences(dic):
 		if pp1 != []:
 			id1 = "%s-%d" %(ch1, i)
 			seq1 = pp1[0].get_sequence()
-			if id1 not in ids_to_model:
-				ids_to_model.append(id1) #get ids from chain with sequences
 		else:
 			continue
 		
@@ -89,9 +86,6 @@ def align_sequences(dic):
 			if pp2 != []:
 				id2 = "%s-%d" %(ch2, j)
 				seq2 = pp2[0].get_sequence()
-				if id2 not in ids_to_model:
-					ids_to_model.append(id2) #get ids from chain with sequences
-
 			else:
 				continue
 
@@ -111,7 +105,7 @@ def align_sequences(dic):
 			if seq_id > 99:
 				best_aln.append((id1,id2))
 
-	return best_aln, all_aln, ids_to_model
+	return best_aln, all_aln
 
 
 ## Function to get the atoms to superimpose
@@ -187,7 +181,6 @@ chains = get_pdb_info(files)
 alignment = align_sequences(chains)
 best_aln = alignment[0]
 all_aln = alignment[1]
-ids_to_model = alignment[2]
 	
 #get superimpose atoms
 atoms = get_superimpose_atoms(chains, best_aln)
