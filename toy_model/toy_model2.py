@@ -85,7 +85,7 @@ def align_sequences(dic):
 			
 			if pp2 != []:
 				id2 = "%s-%d" %(ch2, j)
-				seq2 = pp2[0].get_sequence()
+				seq2 = pp2[0].get_sequence()	
 			else:
 				continue
 
@@ -114,7 +114,6 @@ def get_superimpose_atoms(chains, best_aln):
 	Get the atoms list for the chains that had aligned.
 	Get the chains object for the new structure
 	"""
-	n = 0
 	fixed = []
 	moving = []
 	id_moving = []
@@ -123,15 +122,18 @@ def get_superimpose_atoms(chains, best_aln):
 	for aln in best_aln:
 		fix_id = aln[0]
 		mov_id = aln[1]
+		n = 0
 		#print((fix_id, mov_id))
 		for chain in chains:
 			id_c = "%s-%d" %(chain.get_id(), n)
 			
 			if id_c == fix_id:
+				#print("Set fixed atoms from %s and %s" %(id_c, fix_id))
 				fixed.append(list(chain.get_atoms()))
 				id_fixed.append(n)
 
 			if id_c == mov_id:
+				#print("Set moving atoms from %s and %s" %(id_c, mov_id))
 				moving.append(list(chain.get_atoms()))
 				id_moving.append(n)
 
@@ -151,7 +153,9 @@ def superimpose_atoms(fixed_atoms, moving_atoms, ids_moving, ids_fixed, chains):
 	for i in range(len(fixed_atoms)):
 		sup.set_atoms(fixed_atoms[i], moving_atoms[i]) # set coords
 		sup.apply(chains[ids_moving[i]]) # apply to chains objects
-		del chains[ids_fixed[i]]
+	
+	chains_to_model = [c for c in chains if chains.index(c) not in ids_fixed]
+	return chains_to_model
 
 ## Function to create the new structure
 
@@ -160,11 +164,27 @@ def get_structure(chains):
 	Create a new structure object from the selected chains.
 	"""
 	io = PDBIO()
+	output_files = []
 	for chain in chains:
-		ch_id = chain.get_id()
+		file = "chain_%s.pdb" %(chain.get_id())
+		output_files.append(file)
 		io.set_structure(chain)
-		io.save("chain_%s.pdb" %(ch_id))
+		io.save(file)
 
+	return output_files
+
+## Function to merge all pdb files
+
+def write_final_pdb(pdb_files):
+	"""
+	Merge all output pdb files into a single one
+	"""
+	output = open('interaction.pdb', "w")
+
+	for f in pdb_files:
+		fi = open(f).readlines()
+		output.write("".join(fi))
+		
 
 ###################### MAIN SCRIPT ########################
 
@@ -181,6 +201,7 @@ chains = get_pdb_info(files)
 alignment = align_sequences(chains)
 best_aln = alignment[0]
 all_aln = alignment[1]
+
 	
 #get superimpose atoms
 atoms = get_superimpose_atoms(chains, best_aln)
@@ -190,7 +211,8 @@ id_moving = atoms[2]
 id_fixed = atoms[3]
 
 #superimposition
-superimpose_atoms(fixed, moving, id_moving, id_fixed, chains)
-	
+chains = superimpose_atoms(fixed, moving, id_moving, id_fixed, chains)
+
 #create output
-get_structure(chains)
+files = get_structure(chains)
+write_final_pdb(files)
