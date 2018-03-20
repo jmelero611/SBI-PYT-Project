@@ -129,29 +129,29 @@ def get_superimpose_atoms(chains, best_aln):
 			
 			if id_c == fix_id:
 				#print("Set fixed atoms from %s and %s" %(id_c, fix_id))
-				fixed.append(list(chain.get_atoms()))
-				id_fixed.append(n)
+				fixed.append((n,list(chain.get_atoms())))
 
 			if id_c == mov_id:
 				#print("Set moving atoms from %s and %s" %(id_c, mov_id))
-				moving.append(list(chain.get_atoms()))
-				id_moving.append(n)
+				moving.append((n,list(chain.get_atoms())))
 
 			n += 1
 
-	return fixed, moving, id_moving, id_fixed
+	return fixed, moving
 
 
 ## Function to superimpose sequences aligned
-def superimpose_atoms(fixed_atoms, moving_atoms, ids_moving, ids_fixed, chains):
+def superimpose_atoms(fixed_atoms, moving_atoms, chains):
 	"""
 	Superimpose structures.
 	Get the chains to create the new structure.
 	"""
 	sup = Superimposer() #initialize superimpose
+	ids_moving = [idm[0] for idm in moving_atoms]
+	ids_fixed = [idm[0] for idm in fixed_atoms]
 	
 	for i in range(len(fixed_atoms)):
-		sup.set_atoms(fixed_atoms[i], moving_atoms[i]) # set coords
+		sup.set_atoms(fixed_atoms[i][1], moving_atoms[i][1]) # set coords
 		sup.apply(chains[ids_moving[i]]) # apply to chains objects
 	
 	chains_to_model = [c for c in chains if chains.index(c) not in ids_fixed]
@@ -207,11 +207,9 @@ all_aln = alignment[1]
 atoms = get_superimpose_atoms(chains, best_aln)
 fixed = atoms[0]
 moving = atoms[1]
-id_moving = atoms[2]
-id_fixed = atoms[3]
 
 #superimposition
-chains = superimpose_atoms(fixed, moving, id_moving, id_fixed, chains)
+chains = superimpose_atoms(fixed, moving, chains)
 
 #create output
 files = get_structure(chains)
