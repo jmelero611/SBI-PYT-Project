@@ -72,23 +72,14 @@ def align_sequences(dic):
 	for i in range(n-1):
 		ch1 = dic[i].get_id()
 		pp1 = ppb.build_peptides(dic[i])
-		
-		if pp1 != []:
-			id1 = "%s-%d" %(ch1, i)
-			seq1 = pp1[0].get_sequence()
-		else:
-			continue
+		id1 = "%s-%d" %(ch1, i)
+		seq1 = pp1[0].get_sequence()
 		
 		for j in range(i+1,n):
 			ch2 = dic[j].get_id()
 			pp2 = ppb.build_peptides(dic[j])
-			
-			if pp2 != []:
-				id2 = "%s-%d" %(ch2, j)
-				seq2 = pp2[0].get_sequence()	
-			else:
-				continue
-
+			id2 = "%s-%d" %(ch2, j)
+			seq2 = pp2[0].get_sequence()	
 
 			#Align sequence
 			alns = pairwise2.align.globalds(seq1, seq2, 
