@@ -51,7 +51,24 @@ Modelling is the process through which having a protein sequence and one or more
 
 \section{Inputs and Outputs}
 
-\section{Modules}
+\section{Modules and Packages}
+
+\textit{Biopython} is the main package used, as well as \textit{sys}. 
+
+\subsection{Biopython}
+
+Biopython is the main open-source collection of tools written in Python to work with biological data. From Biopython we take the following subpackages:
+
+\begin{itemize}
+ \item Bio.PDB, to work with PDB files
+ \item Bio.pairwise2, to align protein sequences one by one
+ \item Bio.SubsMat, to import Substitution Matrices to score the alignment
+\end{itemize}
+
+\subsection{sys}
+
+Sys package is the System-specific parameters and functions. This package is used to read the arguments in the command line (sys.argv) and to have access to the three channels of communication with the computer: the \textit{standard in} (sys.stdin), the \textit{standard out} (sys.stdout) and the \textit{standard error} (sys.stderr).
+
 
 \section{Workflow}
 
@@ -60,11 +77,14 @@ Modelling is the process through which having a protein sequence and one or more
 %We superimpose those chains that are the same. We know what chains must be superimposed because we did a previous sequence alignment and we superimpose those chains with a percentage of identity greater than 99%.
 
 %Once we have the parts well oriented, we use each part
-
 \section{Restrictions and Limitations of the Program}
 
 
 \chapter{How to use the program}
+
+\section{Requirements}
+
+\section{Arguments}
 
 
 \chapter{Analysis of examples}
