@@ -22,50 +22,32 @@
 
 \chapter{Background}
 
+The aim of the project is to reconstruct a marco-complex having only the pair interacting chains, using a standalone program created by ourselves.
+The program we created is based on several bioinformatic features, including modelling, structural superimposition and sequence alignment, among others.
 
-\section{Protein Structure}
+\section{Protein-Protein Interaction and Complexes}
 
-Protein structure is the three-dimensional arrangement of atoms in a protein. 
-This structure is made due to the possible rotation of the polypeptide chain and the nature of the residue of the protein.
-In agreement with the Second Law of Termodynamics, the protein will get fold when the minimal energy is found, although they do not try all the possibilities since it is not possible in a short time (Levinthal's Paradox).
-Therefore, the protein structure will be determined by the environment (usually water) and the nature of the residues (hydrophobic, hydrophilic, acidic, basic, aromatic, etc.).
-//
-//
-Depending on the level of observation of the protein structure, there are four different classifications of the structure. These are primary, secondary, terciary and quaternary structure.
-For some level there are also structural features such as supersecondary structures, motifs, domains... which they are not a level of structure but stable and conserved enough to be useful to classify.
+An important point of the project is understanding the Protein-Protein Interaction and Complexes. In the quaternary structure of a protein, there are more than one separated chains of proteins that interacti between them.
+The interaction of these chains can involve a lot of intermolecular bounds, such as hydrogen bounds, electrostatic interactions, pi stacking, cation-pi interaction, etc. This diversity of interactions makes the protein-protein interaction
+very common in order to stabilized the molecule and generate a biological function.////
 
+The whole structure, where two or more chains are combined and have one or different functions, is called a complex. The formation of a complex can be made by protein-protein interaction only or nucleotides (DNA or RNA) can also be part of a complex if there is DNA-protein or RNA-protein interactions.
 
-\subsection{Primary Structure}
+Focusing on the project, having the protein-protein interaction by pairs, we want to reconstruct the whole macro-complex.
 
-Protein primary structure is the linear sequence of aminoacids in a peptide or protein. This level does not refer to the three-dimensional but the chemical composition of the protein and despite of this,
-the aminoacid sequence of the protein determines the fold. This rule is called the Anfinsen's dogma or the Thermodynamic hypothesis. By convention, the primary structure starts from the N-terminal end and finishes at C-terminal end, which is the order in which they are synthesized and it can be inferred from the DNA or RNA sequence.
+\section{Structural superimposition}
 
-
-\subsection{Secondary Structure}
-
-\subsection{Terciary Structure and Domains}
+We cannot assume that the protein-protein interacting pairs are well oriented in the space. Therefore, in order to give to each part the correct orientation, we do a structural superimposition. 
 
 
-\subsection{Quaternary Structure and Protein-Protein Interaction}
+\section{Complex Modelling}
+
+Modelling is the process through which having a protein sequence and one or more templates we can infer the structure of the protein. This is made by a program called \textit{Modeller}. 
 
 
 
+\chapter{Algorithm and Program}
 
-
-
-
-\section{Structural Bioinformatics}
-
-\subsection{Structural Superimposition}
-
-\subsection{Modelling}
-
-\subsection{Control parameters of the model}
-
-
-
-
-\chapter{Algorithm}
 
 \section{Inputs and Outputs}
 
@@ -73,9 +55,16 @@ the aminoacid sequence of the protein determines the fold. This rule is called t
 
 \section{Workflow}
 
-\section{Restrictions and Limitations of the Algorithm}
 
 
+%We superimpose those chains that are the same. We know what chains must be superimposed because we did a previous sequence alignment and we superimpose those chains with a percentage of identity greater than 99%.
+
+%Once we have the parts well oriented, we use each part
+
+\section{Restrictions and Limitations of the Program}
+
+
+\chapter{How to use the program}
 
 
 \chapter{Analysis of examples}
