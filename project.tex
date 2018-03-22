@@ -53,7 +53,7 @@ Modelling is the process through which having a protein sequence and one or more
 
 \subsection{Input files}
 
-There are two types of input files:
+There are two types of input files to the program:
 
 \begin{itemize}
  \item PDB files with two interacting chains
@@ -69,7 +69,7 @@ The output file will be one PDB file in which there will be the coordinates of t
 
 \section{Modules and Packages}
 
-\textit{Biopython} is the principal package used, as well as \textit{sys}. 
+\textit{Biopython} is the principal package used, as well as \textit{sys}, \textit{os}, \textit{re} and \textit{argparse}. 
 
 \subsection{Biopython}
 
@@ -81,9 +81,32 @@ Biopython is the main open-source collection of tools written in Python to work 
 \item Bio.SubsMat, to import Substitution Matrices to score the alignment
 \end{itemize}
 
+
 \subsection{sys}
 
 Sys package is the System-specific parameters and functions. This package is used to read the arguments in the command line (sys.argv) and to have access to the three channels of communication with the computer: the \textit{standard in} (sys.stdin), the \textit{standard out} (sys.stdout) and the \textit{standard error} (sys.stderr).
+
+\subsection{os}
+
+Os package is the Miscellaneous operating system interfaces. With this package, the program can access synonimous commands of the shell, allowing the program to, for example, change working directory (\textit{cd} in shell, \textit{os.chdir} in python). 
+This package is usefull to call command lines from the system but without consuming as much CPU.
+
+\subsection{re}
+
+Re package in the Regular expression operations package. It allows to work with regular expressions with python. In the program, it is used to find PDB and FASTA files, searching the extension of FASTA (.fa, .fasta) and PDB (.pdb) as regular expression at the end of the files.
+
+
+\subsection{argparse}
+
+Argparse package is the Parser for command-line options, arguments annd sub-commands. This packages allows to include the options for the user. The options included in the program are the following:
+
+\begin{itemize}
+ \item -i, --input; it takes the directory as input. By default, it takes the current directory.
+ \item -o, --ouput; it takes the directory and the filename of the PDB file. By default, it creates a file called \textit{output.pdb} in the current directory.
+ \item -s, --sequence; it takes the directory and the filename of the FASTA file in which there is the sequence of the macro-complex. By default, it takes de value \textit{None} and runs the program with default parameters.
+ \item -vz, --visualize; if this option is active, at the end of the script it opens the output file with Chimera.
+ \item -v, --verbose; if this option is active, it prints the log to the standard error. 
+\end{itemize}
 
 
 \section{Workflow}
@@ -101,6 +124,13 @@ Sys package is the System-specific parameters and functions. This package is use
 \section{Requirements}
 
 \section{Arguments}
+
+In the program the following arguments are available:
+
+\begin{itemize}
+ \item 
+\end{itemize}
+
 
 
 \chapter{Analysis of examples}
