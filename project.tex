@@ -123,14 +123,19 @@ Argparse package is the Parser for command-line options, arguments annd sub-comm
 
 \section{Requirements}
 
-\section{Arguments}
+\section{Options and Arguments}
 
 In the program the following arguments are available:
 
 \begin{itemize}
- \item 
+ \item -i, --input; it takes the directory as input. By default, it takes the current directory.
+ \item -o, --ouput; it takes the directory and the filename of the PDB file. By default, it creates a file called \textit{output.pdb} in the current directory.
+ \item -s, --sequence; it takes the directory and the filename of the FASTA file in which there is the sequence of the macro-complex. By default, it takes de value \textit{None} and runs the program with default parameters.
+ \item -vz, --visualize; if this option is active, at the end of the script it opens the output file with Chimera.
+ \item -v, --verbose; if this option is active, it prints the log to the standard error. 
 \end{itemize}
 
+All options are not forced to be, but it is highly recommended to use them, specially those related to the input/ouput files.
 
 
 \chapter{Analysis of examples}
