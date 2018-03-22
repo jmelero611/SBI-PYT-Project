@@ -9,10 +9,10 @@
 
 \pdfinfo{%
   /Title    (Reconstruction of a macro-complex using interacting subunits)
-  /Author   (Lydia Fortea \and Juan Luis Melero)
+  /Author   (Lydia Fortea and Juan Luis Melero)
   /Creator  ()
   /Producer ()
-  /Subject  (Structural Bioinformatics \and Introduction to Python)
+  /Subject  (Structural Bioinformatics and Introduction to Python)
   /Keywords (modelling, reconstruction, macro-complex, structural alignment, structural bioinformatics)
 }
 
@@ -29,9 +29,9 @@ The program we created is based on several bioinformatic features, including mod
 
 An important point of the project is understanding the Protein-Protein Interaction and Complexes. In the quaternary structure of a protein, there are more than one separated chains of proteins that interacti between them.
 The interaction of these chains can involve a lot of intermolecular bounds, such as hydrogen bounds, electrostatic interactions, pi stacking, cation-pi interaction, etc. This diversity of interactions makes the protein-protein interaction
-very common in order to stabilized the molecule and generate a biological function.////
+very common in order to stabilized the molecule and generate a biological function.\\\\
 
-The whole structure, where two or more chains are combined and have one or different functions, is called a complex. The formation of a complex can be made by protein-protein interaction only or nucleotides (DNA or RNA) can also be part of a complex if there is DNA-protein or RNA-protein interactions.
+The whole structure, where two or more chains are combined and have one or different functions, is called a complex. The formation of a complex can be made by protein-protein interaction only or nucleotides (DNA or RNA) can also be part of a complex if there is DNA-protein or RNA-protein interactions.\\\\
 
 Focusing on the project, having the protein-protein interaction by pairs, we want to reconstruct the whole macro-complex.
 
@@ -51,18 +51,34 @@ Modelling is the process through which having a protein sequence and one or more
 
 \section{Inputs and Outputs}
 
+\subsection{Input files}
+
+There are two types of input files:
+
+\begin{itemize}
+ \item PDB files with two interacting chains
+ \item For each PDB files of the interaction of two chains, PDB files of each chain separatedly.
+\end{itemize}
+
+Input files must be all in the directory specified in the arguments or in the current directory by default. The program will read all the PDB files, si it is necessary that all the PDB files in the working directory are the subunits of the macrocomplex and nothing else.
+
+\subsection{Output file}
+
+The output file will be one PDB file in which there will be the coordinates of the atoms of the macro-complex. The output file will be located in the directory specified in the arguments. By default, it creates a file called \textit{output.pdb} in the current directory. If the current directory is the same in which there are the input files, be careful if you want to exercute the program twice or more times at the same time, since it will take the output file also as input file.
+
+
 \section{Modules and Packages}
 
-\textit{Biopython} is the main package used, as well as \textit{sys}. 
+\textit{Biopython} is the principal package used, as well as \textit{sys}. 
 
 \subsection{Biopython}
 
 Biopython is the main open-source collection of tools written in Python to work with biological data. From Biopython we take the following subpackages:
 
 \begin{itemize}
- \item Bio.PDB, to work with PDB files
- \item Bio.pairwise2, to align protein sequences one by one
- \item Bio.SubsMat, to import Substitution Matrices to score the alignment
+\item Bio.PDB, to work with PDB files
+\item Bio.pairwise2, to align protein sequences one by one
+\item Bio.SubsMat, to import Substitution Matrices to score the alignment
 \end{itemize}
 
 \subsection{sys}
