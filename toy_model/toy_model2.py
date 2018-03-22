@@ -16,6 +16,7 @@ import sys
 def get_pdb_info(pdb_files):
 	"""
 	Extract all chains of the structures from a list of pdb files
+	Consider only unique interactions
 	"""
 	p = PDBParser(PERMISSIVE=1)#initialize pdb parser
 
@@ -29,8 +30,7 @@ def get_pdb_info(pdb_files):
 		structures.append(str)
 
 	for str in structures:
-		residue_to_remove = []
-		chain_to_remove = []
+		str_id = str.get_id()
 		for model in str:
 			for chain in model:
 				for residue in chain:
@@ -38,6 +38,7 @@ def get_pdb_info(pdb_files):
 						chain.detach_child(residue.id)
 				if len(chain) >= 10:
 					chains.append(chain)
+
 	return chains
 
 ##Function to align sequences from chains
@@ -155,27 +156,16 @@ def get_structure(chains):
 	Create a new structure object from the selected chains.
 	"""
 	io = PDBIO()
-	output_files = []
+	file = "output.pdb"
+	base_struct = Structure.Structure('1')
+	base_struct.add(Model.Model(0))
+	
 	for chain in chains:
-		file = "chain_%s.pdb" %(chain.get_id())
-		output_files.append(file)
-		io.set_structure(chain)
-		io.save(file)
+		base_struct[0].add(chain)
+	
+	io.set_structure(base_struct)
+	io.save(file)
 
-	return output_files
-
-## Function to merge all pdb files
-
-def write_final_pdb(pdb_files):
-	"""
-	Merge all output pdb files into a single one
-	"""
-	output = open('interaction.pdb', "w")
-
-	for f in pdb_files:
-		fi = open(f).readlines()
-		output.write("".join(fi))
-		
 
 ###################### MAIN SCRIPT ########################
 
@@ -193,15 +183,13 @@ alignment = align_sequences(chains)
 best_aln = alignment[0]
 all_aln = alignment[1]
 
-	
 #get superimpose atoms
 atoms = get_superimpose_atoms(chains, best_aln)
 fixed = atoms[0]
 moving = atoms[1]
-
+#print(chains)
 #superimposition
 chains = superimpose_atoms(fixed, moving, chains)
 
 #create output
-files = get_structure(chains)
-write_final_pdb(files)
+get_structure(chains)
