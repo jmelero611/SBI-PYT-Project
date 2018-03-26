@@ -1,1 +1,5 @@
 MAIN MODEL
+
+run main.py -i [inputs] -o [outfile] -v -vz
+
+depend on the interactions we have, it will call to homodimers or heterodimers script to construct the complex and create output file
