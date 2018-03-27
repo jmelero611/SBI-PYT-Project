@@ -98,25 +98,35 @@ Re package in the Regular expression operations package. It allows to work with 
 
 \subsection{argparse}
 
-Argparse package is the Parser for command-line options, arguments annd sub-commands. This packages allows to include the options for the user. The options included in the program are the following:
+Argparse package is the Parser for command-line options, arguments annd sub-commands. This packages allows to include the options for the user. The options included in the program are described in section \textit{Options and Arguments}.
 
-\begin{itemize}
- \item -i, --input; it takes the directory as input. By default, it takes the current directory.
- \item -o, --ouput; it takes the directory and the filename of the PDB file. By default, it creates a file called \textit{output.pdb} in the current directory.
- \item -s, --sequence; it takes the directory and the filename of the FASTA file in which there is the sequence of the macro-complex. By default, it takes de value \textit{None} and runs the program with default parameters.
- \item -vz, --visualize; if this option is active, at the end of the script it opens the output file with Chimera.
- \item -v, --verbose; if this option is active, it prints the log to the standard error. 
-\end{itemize}
+\subsection{Homodimers and Heterodimers}
 
+Homodimers and Heterodimers are self-created modules which analyze the structures depending on the input files. If the pair of chains in the interacting files are the same (A-A), then it is considered \texitit{homodimer}. If the pair of chains in the interacting files are different (A-B) but all the files contain this heterodimer (files are A-B, A-B...), then it is considered \textit{repeated heterodimer}. Finally, if the pair of chains in the interacting files are different and all interacting files are different (A-B, B-C...), then it is considered \textit{heterodimer}. For homodimers and repeated heterodimers, homodimers module is used. For heterodimers, heterodimers module is used.
+
+\subsubsection{Homodimers module}
+
+\subsubsection{Heterodimers module}
+
+Heterodimers module first extract all the sequences of the chains and align them with pairwise alignment and stores the percentage of identity (\%id). Those chains with a \%id greater than 99\% are assumed to be the same and then, they are going to be superimposed. 
+Once we know which chains must be superimposed, we do so taking one as reference chain and the other as moving chain. Then the coordinates are updated and the reference chain is deleted in order not to have repeated superimposed chains. 
 
 \section{Workflow}
 
+First of all, we take the input files provided by the user. We create an empty PDB object with Bio.PDB module and we fill this empty structure with the atoms that belong to protein chains and whose sequence length is greater than 20 aminoacids (in order to avoid other ligands). \\
+\\
+After that, we analyze the sequence of the PDB files to decide if we treat the interaction files as homodimers (A-A interactions), repeated heterodimers (A-B, A-B...) or distinct heterodimers (A-B, B-C...).
+If the interactions are homodimers (A-A) or repeated heterodimers (A-B, A-B...), then we use the standalone module \textit{homodimers.py}. If the interactions are distinct heterodimers (A-B, B-C...), then we use the module \textit{heterodimers.py}. You can see the workflow of each module in section \textit{Modules and Packages}, subsection \textit{Homodimers and Heterodimers}.\\
+\\
+Finally, the program creates a PDB file with the final structure. If the option visualize (-vz, --visualize) is activated, it opens the PDB with chimera (see section \textit{Options and Arguments} for requirements of this option).
 
-
-%We superimpose those chains that are the same. We know what chains must be superimposed because we did a previous sequence alignment and we superimpose those chains with a percentage of identity greater than 99%.
-
-%Once we have the parts well oriented, we use each part
 \section{Restrictions and Limitations of the Program}
+
+\subsection{Homodimer module}
+
+\subsection{Heterodimer module}
+
+One of the main restrictions of this module is that all chains must be able to be followed. That is, we must be able to build a path joining all the subunits (A-B, B-C, C-D...). If it is not like that (A-B, C-D... for example), the program will crash. This is because one chain will be used as reference chain, and the other as moving chain. If it only appears once, then it is not possible to build the structure.
 
 
 \chapter{How to use the program}
@@ -131,11 +141,19 @@ In the program the following arguments are available:
  \item -i, --input; it takes the directory as input. By default, it takes the current directory.
  \item -o, --ouput; it takes the directory and the filename of the PDB file. By default, it creates a file called \textit{output.pdb} in the current directory.
  \item -s, --sequence; it takes the directory and the filename of the FASTA file in which there is the sequence of the macro-complex. By default, it takes de value \textit{None} and runs the program with default parameters.
- \item -vz, --visualize; if this option is active, at the end of the script it opens the output file with Chimera.
+ \item -vz, --visualize; if this option is active, at the end of the script it opens the output file with Chimera. It will only work if Chimera is installed and callable by python interpreter.
  \item -v, --verbose; if this option is active, it prints the log to the standard error. 
 \end{itemize}
 
 All options are not forced to be, but it is highly recommended to use them, specially those related to the input/ouput files.
+
+\section{Logging}
+
+Activating the option for verbose (-v, --verbose), it prints to the standard error the log of the program. The point that are verbosed and the message if it is all right are the followings:
+
+\begin{itemize}
+ \item 
+\end{itemize}
 
 
 \chapter{Analysis of examples}
