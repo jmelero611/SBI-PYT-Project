@@ -40,9 +40,9 @@ Focusing on the project, having the protein-protein interaction by pairs, we wan
 We cannot assume that the protein-protein interacting pairs are well oriented in the space. Therefore, in order to give to each part the correct orientation, we do a structural superimposition. 
 
 
-\section{Complex Modelling}
+%\section{Complex Modelling}
 
-Modelling is the process through which having a protein sequence and one or more templates we can infer the structure of the protein. This is made by a program called \textit{Modeller}. 
+%Modelling is the process through which having a protein sequence and one or more templates we can infer the structure of the protein. This is made by a program called \textit{Modeller}. 
 
 
 
@@ -69,16 +69,16 @@ The output file will be one PDB file in which there will be the coordinates of t
 
 \section{Modules and Packages}
 
-\textit{Biopython} is the principal package used, as well as \textit{sys}, \textit{os}, \textit{re} and \textit{argparse}. 
+\textit{Biopython} is the principal package used, as well as \textit{sys}, \textit{os}, \textit{re}, \textit{argparse} and the self-created modules \textit{homodimers} and \textit{heterodimers}. 
 
 \subsection{Biopython}
 
 Biopython is the main open-source collection of tools written in Python to work with biological data. From Biopython we take the following subpackages:
 
 \begin{itemize}
-\item Bio.PDB, to work with PDB files
-\item Bio.pairwise2, to align protein sequences one by one
-\item Bio.SubsMat, to import Substitution Matrices to score the alignment
+ \item Bio.PDB, to work with PDB files
+ \item Bio.pairwise2, to align protein sequences one by one
+ \item Bio.SubsMat, to import Substitution Matrices to score the alignment
 \end{itemize}
 
 
@@ -113,11 +113,9 @@ Once we know which chains must be superimposed, we do so taking one as reference
 
 \section{Workflow}
 
-First of all, we take the input files provided by the user. We create an empty PDB object with Bio.PDB module and we fill this empty structure with the atoms that belong to protein chains and whose sequence length is greater than 20 aminoacids (in order to avoid other ligands). \\
-\\
+First of all, we take the input files provided by the user. We create an empty PDB object with Bio.PDB module and we fill this empty structure with the atoms that belong to protein chains and whose sequence length is greater than 20 aminoacids (in order to avoid other ligands). \\\\
 After that, we analyze the sequence of the PDB files to decide if we treat the interaction files as homodimers (A-A interactions), repeated heterodimers (A-B, A-B...) or distinct heterodimers (A-B, B-C...).
-If the interactions are homodimers (A-A) or repeated heterodimers (A-B, A-B...), then we use the standalone module \textit{homodimers.py}. If the interactions are distinct heterodimers (A-B, B-C...), then we use the module \textit{heterodimers.py}. You can see the workflow of each module in section \textit{Modules and Packages}, subsection \textit{Homodimers and Heterodimers}.\\
-\\
+If the interactions are homodimers (A-A) or repeated heterodimers (A-B, A-B...), then we use the standalone module \textit{homodimers.py}. If the interactions are distinct heterodimers (A-B, B-C...), then we use the module \textit{heterodimers.py}. You can see the workflow of each module in section \textit{Modules and Packages}, subsection \textit{Homodimers and Heterodimers}.\\\\
 Finally, the program creates a PDB file with the final structure. If the option visualize (-vz, --visualize) is activated, it opens the PDB with chimera (see section \textit{Options and Arguments} for requirements of this option).
 
 \section{Restrictions and Limitations of the Program}
@@ -132,6 +130,8 @@ One of the main restrictions of this module is that all chains must be able to b
 \chapter{How to use the program}
 
 \section{Requirements}
+
+The main program requires for \textit{Biopython} package and auxiliary modules \textit{homodimers.py} and \textit{heterodimers.py}.
 
 \section{Options and Arguments}
 
@@ -155,6 +155,11 @@ Activating the option for verbose (-v, --verbose), it prints to the standard err
  \item 
 \end{itemize}
 
+\section{Running the program}
+
+To run the program in the terminal:\\ \texttt{\$ python3 main.py -i [input files] -o [output file]} \\\\ You can activate as many options as you would like:\\ \texttt{\$ python3 main.py -i [input files] -o [output file] -v -vz}\\\\
+
+
 
 \chapter{Analysis of examples}
 
@@ -172,11 +177,11 @@ Activating the option for verbose (-v, --verbose), it prints to the standard err
 
 
 
-\chapter{Appendix}
+%\chapter{Appendix}
 
-\section{Script}
+%\section{Script}
 
-\section{README}
+%\section{README}
 
 
 
