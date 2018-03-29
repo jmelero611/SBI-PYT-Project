@@ -5,6 +5,7 @@ import os
 import subprocess
 import argparse
 import string
+import numpy as np
 from Bio.PDB import *
 from Bio import pairwise2
 from Bio.SubsMat import MatrixInfo as matlist
@@ -81,7 +82,7 @@ def get_min_distance(chain1, chain2):
 	return min_distance
 
 
-#Compare chain sequence
+#Compare chain sequences
 def seq_comparison(seq1, seq2):
 	
 	alignment = pairwise2.align.globalxx(seq1, seq2)
@@ -147,7 +148,86 @@ def structure_chain_comparison(str1, str2):
 
 	return rs_tot
 
+#Compare two interactions
+def compare_interactions(inter1, inter2):
+	str1 = Structure.Structure('1')
+	str2 = Structure.Structure('2')
 
+	str1.add(Model.Model(0))
+	str2.add(Model.Model(0))
+
+	homodimer = False
+	for chain in inter1:
+		if len(list(str1[0].get_chains())) == 1 and seq_comparison(chain, list(str1[0].get_chains()[0])):
+			homodimer = True
+
+		str1[0].add(Chain.Chain(chain.get_id()))
+		res_count = 0
+		for residue in chain:
+			for atom in residue:
+				if atom.get_id() == 'CA':
+					str1[0][chain.get_id()].add(Residue.Residue(('',res_count,''),residue.get_resname(),residue.get_segis()))
+
+					str1[0][chain.get_id()][('',res_count,'')].add(atom.copy())
+					res_count += 1
+
+	for chain in inter2:
+		str2[0].add(Chain.Chain(chain.get_id()))
+		res_count = 0
+		for residue in chain:
+			for atom in residue:
+				if atom.get_id() == 'CA':
+					str2[0][chain.get_id()].add(Residue.Residue(('',res_count,''),residue.get_resname(),residue.get_segis()))
+
+					str2[0][chain.get_id()][('',res_count,'')].add(atom.copy())
+					res_count += 1
+
+	print(list(str1.get_chains()))
+	print(list(str2.get_chains()))
+	print(homodimer)
+
+
+#Compare if two structures are structurally similar
+def compare_structures_superimpose(str1, str2):
+	chains1 = [ch for ch in str1.get_chains()]
+	chains2 = [ch for ch in str2.get_chains()]
+
+	sup = Superimposer()
+	mean_dist = []
+
+	for chain1 in chains1:
+		for chain2 in chains2:
+			seq1 = get_sequence(chain1)
+			seq2 = get_sequence(chain2)
+
+			if not seq_comparison(seq1, seq2):
+				continue
+
+			for round in range(10):
+				sup.set_atoms(list(str1[0][chain1.get_id()].get_atoms()), list(str2[0][chain1.get_id()].get_atoms()))
+				sup.apply(str2)
+
+
+			distances = []
+			chain3 = [ch.get_id() for ch in chains1 if ch != chain1.get_id()][0]
+			chain4 = [ch.get_id() for ch in chains2 if ch != chain2.get_id()][0]
+
+			CA3 = [res['CA'] for res in str1[0][chain3].get_residues() if 'CA' in [atm.get_id() for atm in res.get_atoms()]]
+			CA4 = [res['CA'] for res in str2[0][chain4].get_residues() if 'CA' in [atm.get_id() for atm in res.get_atoms()]]
+
+			for atoms in zip(CA3, CA4):
+				atom1 = atoms[0].get_coord()
+				atom2 = atoms[1].get_coord()
+				diff = atom1 - atom2
+				diff_sq = list(map(lambda x: pow(x,2), diff))
+				dist = np.sqrt(sum(diff_sq))
+				distances.append(dist)
+
+			mean_dist.append(sum(distances)/len(distances))
+
+			if min(mean_dist) < 9:
+				return 0
+	return 1
 #Function to create a dictionary with pdb unique information
 
 def extract_pdb_information(pdb_files, pdb_interaction):
@@ -167,29 +247,46 @@ def extract_pdb_information(pdb_files, pdb_interaction):
 
 		if pdb_interaction:
 			for str in pdb_interaction:
-				print("we compare %s with %s" %(pdb_interaction[str], structure))
+				#print("we compare %s with %s" %(pdb_interaction[str], structure))
 				tmp_chain_id = []
 				results = structure_chain_comparison(pdb_interaction[str], structure)
 				print("the results of comparison are %s" %results)
 
 				if 1 in results[0] and 1 in results[1]: #All chains are the same
-					counter = 0 #qqui habría que mirar si las interacciones son iguales o no
-					#no se si es necesario
-				
+					str_comp = compare_structures_superimpose(pdb_interaction[str], structure)
+					#0 if structures are similar ans 1 if not
+					counter += str_comp
+
+					if str_comp == 1: #different structures
+						n = 0
+						repeat = 0
+
+						for key in [id for id in pdb_interaction if list(id[:2]) == [str[0], str[1]]]:
+							repeat.append(compare_structures_superimpose(pdb_interaction[key], structure))
+							n.append(key[2])
+
+						if sum(repeat) == len(pdb_interaction):
+							tmp_chain_id = [str[0], str[1], max(num) +1]
+							counter = len(pdb_interaction)
+							break
+						else:
+							counter = 0
+						break
+					else:
+						break
+
+
 				elif 1 in results[0]:
 					if str[0] not in tmp_chain_id:
 						tmp_chain_id.append(str[0])
 					counter += 1
 				elif 1 in results[1]:
-					print("Match at second id")
-					print(str[0])
 					if str[0] not in tmp_chain_id:
 						tmp_chain_id.append(str[1])
 					counter += 1
 				else:
 					counter += 1 
-
-				print(tmp_chain_id, counter)	
+	
 
 		else:
 			seq = []
@@ -204,41 +301,35 @@ def extract_pdb_information(pdb_files, pdb_interaction):
 
 
 			pdb_interaction[chains_id] = structure
-			print(alphabet)
+
 			if chains_id[0] in alphabet:
 				alphabet.remove(chains_id[0])
 			
 			if chains_id[1] in alphabet:
 				alphabet.remove(chains_id[1])
-			print(alphabet)
 
-#		Esta parte no entiendo bien que ees lo que quiere hacer, si coger aquellas que son iguales o las diferentes
-		print(counter, len(pdb_interaction))
+		
 		if counter == len(pdb_interaction):
 			seq = []
+
 			for chain in structure.get_chains():
-				print(chain.id)
 				seq.append(get_sequence(chain))
 
-			print(seq)
-			print(len(tmp_chain_id))
-
 			if len(tmp_chain_id) == 0:
-				if seq_comparison(seq[0], seq[1]) is False:
+				if seq_comparison(seq[0], seq[1]) is False: #<0,95%
 					m += 1
 					chain_id = (alphabet[n], alphabet[m], 0)
 				else:
 					chain_id = (alphabet[n], alphabet[m], 0)
-				print("no tmp chain id")
-				print(chain_id)
 
 			if len(tmp_chain_id) == 1:
+
 				if seq_comparison(seq[0], seq[1]) is False:
-					chain_id = (tmp_chain_id[0], alphabet[n], 0)
+					chain_id = tuple([tmp_chain_id[0], alphabet[n], 0])
+					tmp_chain_id.append(alphabet[n])
 				else:
-					chain_id = (tmp_chain_id[0], tmp_chain_id[0], 0)
-				print("tmp chain id")
-				print(chain_id)
+					chain_id = tuple([tmp_chain_id[0], tmp_chain_id[0], 0])
+					tmp_chain_id.append(tmp_chain_id[0])
 
 			if len(tmp_chain_id) == 2:
 				tmp_chain_id.append(0)
@@ -249,15 +340,30 @@ def extract_pdb_information(pdb_files, pdb_interaction):
 
 			pdb_interaction[chain_id] = structure
 
-			if tmp_chain_id[0] in alphabet:
+
+			if tmp_chain_id and tmp_chain_id[0] in alphabet:
 				alphabet.remove(tmp_chain_id[0])
             
-			#if tmp_chain_id and tmp_chain_id[1] in alphabet:
-			#	alphabet.remove(tmp_chain_id[1])
+			if tmp_chain_id and tmp_chain_id[1] in alphabet:
+				alphabet.remove(tmp_chain_id[1])
 
 	return pdb_interaction
+
+def macrocomplex_builder(str, sup_dic = {}):
+	for interact in dic.values():
+		sup = Superimposer()
+		sup.set_atoms(list(str.get_atoms()), list(interact.get_atoms()))
+		if not np.abs(sup.rms) < 10:
+			macrocomplex_builder(sup)
+		else:
+			sup_dic = sup
+
+	print(sup_dic)
 alphabet = list(string.ascii_uppercase) + list(string.ascii_lowercase)
 dic = {}
 files = get_input(options.infile)
-print(files)
-print(extract_pdb_information(files, dic))
+extract_pdb_information(files, dic)
+
+print(dic)
+
+
