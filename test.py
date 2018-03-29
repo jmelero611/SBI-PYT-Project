@@ -101,7 +101,7 @@ def structure_chain_comparison(str1, str2):
 	#print((list(str2.get_chains())))
 	for chain1 in str1.get_chains():
 		seq1 = get_sequence(chain1)
-
+		#esto me ralla tambien, porque los resultados son rs_tot[0] para las comparaciones cadena 2 y rs_tot[1] para la cadena1
 		if rs == 0:
 			rs += 1
 		else:
