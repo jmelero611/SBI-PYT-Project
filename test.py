@@ -27,18 +27,6 @@ parser.add_argument('-o', '--output',
 					default = None, #"interacion_macrocomplex.pdb",
 					help = "Enter the name of output file")
 
-parser.add_argument('-s', '--sequence',
-					dest = "sequence",
-					action = "store",
-					default = None,
-					help = "Enter a sequence of the macrocomplex if avaiable")
-
-parser.add_argument('-vz', '--visualize',
-					dest = "visualize",
-					action = "store_true",
-					default = False,
-					help = "Visualize obtained macrocomplex in Chimera")
-
 parser.add_argument('-v', '--verbose',
 					dest = 'verbose',
 					action = 'store_true',
@@ -105,18 +93,6 @@ def get_sequence(chain):
 			seq = pp[0].get_sequence() #get the
 			return seq
 
-#get numeric array from the alignment
-def get_numeric_array(seq_alignment):
-	array = []
-	n = 0
-	for char in seq_alignment:
-		if char == "-":
-			array.append('-')
-		else:
-			array.append(n)
-		n += 1
-		
-	return array
 
 #Compare chains from two structures
 def structure_chain_comparison(str1, str2):
@@ -138,7 +114,7 @@ def structure_chain_comparison(str1, str2):
 
 			if seq_comparison(seq1, seq2) is True:
 				print("The same chain")
-				rs_tot[rs][rs2] = 1
+				rs_tot[rs][rs2] = 1 #donde hay un 1 es que las cadenas coinciden
 			else:
 				rs_tot[rs][rs2] = 0
 				print("Not The same chain")
@@ -176,6 +152,7 @@ def extract_pdb_information(pdb_files, pdb_interaction):
 					counter = len(pdb_interaction) #qqui habría que mirar si las interacciones son iguales o no
 					#no se si es necesario
 				
+				#aqui no entiendo bien lo que hace, porque no se que es lo que quiere conseguir
 				elif 1 in results[0]:
 					if str[0] not in tmp_chain_id:
 						tmp_chain_id.append(str[0])
