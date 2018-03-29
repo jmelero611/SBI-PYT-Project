@@ -102,10 +102,10 @@ def structure_chain_comparison(str1, str2):
 	for chain1 in str1.get_chains():
 		seq1 = get_sequence(chain1)
 		#esto me ralla tambien, porque los resultados son rs_tot[0] para las comparaciones cadena 2 y rs_tot[1] para la cadena1
-		if rs == 0:
-			rs += 1
-		else:
-			rs = 0
+		#if rs == 0:
+		#	rs += 1
+		#else:
+		#	rs = 0
 		rs2 = 0
 		for chain2 in str2.get_chains():
 			seq2 = get_sequence(chain2)
@@ -119,7 +119,7 @@ def structure_chain_comparison(str1, str2):
 				rs_tot[rs][rs2] = 0
 				print("Not The same chain")
 			rs2 += 1
-		rs += 1
+		rs += 1 #creo que es esto lo que hay que hacer
 	print(rs_tot)
 	return rs_tot
 
@@ -149,7 +149,7 @@ def extract_pdb_information(pdb_files, pdb_interaction):
 				print("the results of comparison are %s" %results)
 
 				if 1 in results[0] and 1 in results[1]: #All chains are the same
-					counter = len(pdb_interaction) #qqui habría que mirar si las interacciones son iguales o no
+					counter = 0 #qqui habría que mirar si las interacciones son iguales o no
 					#no se si es necesario
 				
 				#aqui no entiendo bien lo que hace, porque no se que es lo que quiere conseguir
