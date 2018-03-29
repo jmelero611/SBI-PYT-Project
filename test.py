@@ -27,6 +27,18 @@ parser.add_argument('-o', '--output',
 					default = None, #"interacion_macrocomplex.pdb",
 					help = "Enter the name of output file")
 
+parser.add_argument('-s', '--sequence',
+					dest = "sequence",
+					action = "store",
+					default = None,
+					help = "Enter a sequence of the macrocomplex if avaiable")
+
+parser.add_argument('-vz', '--visualize',
+					dest = "visualize",
+					action = "store_true",
+					default = False,
+					help = "Visualize obtained macrocomplex in Chimera")
+
 parser.add_argument('-v', '--verbose',
 					dest = 'verbose',
 					action = 'store_true',
@@ -93,6 +105,18 @@ def get_sequence(chain):
 			seq = pp[0].get_sequence() #get the
 			return seq
 
+#get numeric array from the alignment
+def get_numeric_array(seq_alignment):
+	array = []
+	n = 0
+	for char in seq_alignment:
+		if char == "-":
+			array.append('-')
+		else:
+			array.append(n)
+		n += 1
+		
+	return array
 
 #Compare chains from two structures
 def structure_chain_comparison(str1, str2):
@@ -101,7 +125,7 @@ def structure_chain_comparison(str1, str2):
 	#print((list(str2.get_chains())))
 	for chain1 in str1.get_chains():
 		seq1 = get_sequence(chain1)
-		#esto me ralla tambien, porque los resultados son rs_tot[0] para las comparaciones cadena 2 y rs_tot[1] para la cadena1
+
 		#if rs == 0:
 		#	rs += 1
 		#else:
@@ -114,13 +138,13 @@ def structure_chain_comparison(str1, str2):
 
 			if seq_comparison(seq1, seq2) is True:
 				print("The same chain")
-				rs_tot[rs][rs2] = 1 #donde hay un 1 es que las cadenas coinciden
+				rs_tot[rs][rs2] = 1
 			else:
 				rs_tot[rs][rs2] = 0
 				print("Not The same chain")
 			rs2 += 1
-		rs += 1 #creo que es esto lo que hay que hacer
-	print(rs_tot)
+		rs += 1
+
 	return rs_tot
 
 
@@ -152,12 +176,13 @@ def extract_pdb_information(pdb_files, pdb_interaction):
 					counter = 0 #qqui habría que mirar si las interacciones son iguales o no
 					#no se si es necesario
 				
-				#aqui no entiendo bien lo que hace, porque no se que es lo que quiere conseguir
 				elif 1 in results[0]:
 					if str[0] not in tmp_chain_id:
 						tmp_chain_id.append(str[0])
 					counter += 1
 				elif 1 in results[1]:
+					print("Match at second id")
+					print(str[0])
 					if str[0] not in tmp_chain_id:
 						tmp_chain_id.append(str[1])
 					counter += 1
@@ -179,12 +204,13 @@ def extract_pdb_information(pdb_files, pdb_interaction):
 
 
 			pdb_interaction[chains_id] = structure
-			
+			print(alphabet)
 			if chains_id[0] in alphabet:
 				alphabet.remove(chains_id[0])
 			
 			if chains_id[1] in alphabet:
 				alphabet.remove(chains_id[1])
+			print(alphabet)
 
 #		Esta parte no entiendo bien que ees lo que quiere hacer, si coger aquellas que son iguales o las diferentes
 		print(counter, len(pdb_interaction))
@@ -229,7 +255,7 @@ def extract_pdb_information(pdb_files, pdb_interaction):
 			#if tmp_chain_id and tmp_chain_id[1] in alphabet:
 			#	alphabet.remove(tmp_chain_id[1])
 
-	print(pdb_interaction)
+	return pdb_interaction
 alphabet = list(string.ascii_uppercase) + list(string.ascii_lowercase)
 dic = {}
 files = get_input(options.infile)
