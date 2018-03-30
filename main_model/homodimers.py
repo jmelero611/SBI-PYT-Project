@@ -4,13 +4,16 @@
 
 from Bio.PDB import *
 import numpy
+import string
+import copy
 
-def get_structure_homodimer(structures, outfile):
+#Function to build the complex for homodimers from all files
+def get_structure_homodimer_from_files(structures):
 	"""
 	Predict the structure of a homodimer of the same chains and heterodimer of two chains
 	"""
 	print("Aligned all to the first structure")
-	ref_model = structures[0]
+	ref_model = structures[0].copy()
 
 	#Iterate over all interactions
 	for alt_model in structures:
@@ -26,6 +29,7 @@ def get_structure_homodimer(structures, outfile):
 					alt_atoms.append(alt_res['CA'])
 
 		#Align these paired atom lists:
+		
 		super_imposer = Superimposer()
 		super_imposer.set_atoms(ref_atoms, alt_atoms)
 
@@ -43,12 +47,37 @@ def get_structure_homodimer(structures, outfile):
 
 		print("RMS(first model, model %i) = %0.2f" % (alt_model.id, super_imposer.rms))
 
+	return structures
 
-	print("Saving aligned structure as PDB file %s" % outfile)
 
-	io = PDBIO()
-	io.set_structure(structures)
-	io.save(outfile)
 
-	print("Done")
+
+
+#Function to build the complex for homodimers from n interactions
+def get_structure_homodimer_from_number_interaction(main_inter, n):
+	"""
+	Predict the structure of a homodimer of the same chains and heterodimer of two chains
+	"""
+
+	super_imposer = Superimposer()
+	inter = main_inter[0].copy()
+
+	new_structure = Structure.Structure("New")
+	new_structure.add(Model.Model('ref'))
+	chain1 = list(inter.get_chains())[0]
+	new_structure['ref'].add(chain1.copy())
+
+	for i in range(n):
+		new_structure.add(Model.Model(i))
+		alt_chain = list(new_structure.get_chains())[-1]
+		print(alt_chain.get_full_id())
+		#print("Superposing %s with %s" %(ref_model.get_full_id(), alt_model.get_full_id()))
+		super_imposer.set_atoms(list(alt_chain.get_atoms()), list(list(inter.get_chains())[0].get_atoms()))
+		#Align these paired atom lists:
+		print(super_imposer.rotran)
+		super_imposer.apply(list(inter.get_atoms()))
+		chain2 = list(inter.get_chains())[1]
+		new_structure[i].add(chain2.copy())
+
+	return new_structure
 
