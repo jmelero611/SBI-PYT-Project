@@ -11,8 +11,8 @@ import argparse
 import string
 from Bio.PDB import *
 from Bio import pairwise2
-import homodimers
-import heterodimers
+from homodimers import *
+from heterodimers import *
 
 #Define command-line argumets
 
@@ -27,7 +27,7 @@ parser.add_argument('-i', '--input',
 parser.add_argument('-o', '--output',
 					dest = "outfile",
 					action = "store",
-					default = None, #"interacion_macrocomplex.pdb",
+					default = None, 
 					help = "Enter the name of output file")
 
 parser.add_argument('-vz', '--visualize',
@@ -48,7 +48,12 @@ options = parser.parse_args()
 
 #Extract input files
 def get_input(inputs):
-	"""Handling with different kind of input: a list of pdb files or a given path with files """
+	"""
+	Handling with different kind of input:
+	 a list of pdb files
+	 a given path with files
+	 default input which is the current directory.
+	 """
 	motif = re.compile('.pdb$')
 	path = inputs
 
@@ -57,7 +62,11 @@ def get_input(inputs):
 		pdb_files = [f for f in os.listdir(path) if motif.search(f) is not None]
 		os.chdir(path)
 	else:
-		pdb_files = [inputs]
+		#check if input is a list
+		if ',' in inputs:
+			pdb_files = inputs.split(',')
+		else:
+			pdb_files = [inputs]
 
 	return pdb_files
 
@@ -68,23 +77,29 @@ def get_name_structure(filename):
 
 	return m.group(1)
 
-#Get sequence (CA) from chain
+#Get sequence from chain taking into account alpha carbons
 def get_sequence(chain):
+	"""
+	Get sequence from chain with its alpha carbons
+	""" 
 	ppb = CaPPBuilder()
 
 	for residue in chain:
 		if residue.id[0] != ' ':
 			chain.detach_child(residue.id) #delete heteroatoms
-		if len(chain) <= 40:
-			return None	#select chains which forms sequences from more than 
+		if len(chain) <= 30:
+			return None	#select chains are suitable to be protein chains
 		else:
 			pp = ppb.build_peptides(chain)
-			seq = pp[0].get_sequence() #get the
+			seq = pp[0].get_sequence()
 			return seq
 
 #Compare chain sequences
 def seq_comparison(seq1, seq2):
-	
+	"""
+	Use Pairwise alignment to align to sequences.
+	Return True if similar and False if not.
+	"""
 	alignment = pairwise2.align.globalxx(seq1, seq2)
 	score = alignment[0][2]
 	ident_perc = score / max(len(seq1), len(seq2))
@@ -95,36 +110,30 @@ def seq_comparison(seq1, seq2):
 		return False
 
 #Compare chains from two structures
-def structure_chain_comparison(str1, str2):
+def chains_comparison(str1, str2):
+	"""
+	Compare both chains from each structure.
+	Return True if both sequences from str1 are similar to one or both of sequences from str
+	"""
 	rs = 0
-	rs_tot = [[0,0], [0,0]]
-	#print((list(str2.get_chains())))
+	rs_tot = [[0,0],[0,0]]
 	for chain1 in str1.get_chains():
 		seq1 = get_sequence(chain1)
-		rs2 = 0
 		for chain2 in str2.get_chains():
 			seq2 = get_sequence(chain2)
 
-			print("Comparint %s with %s" %(chain1.get_id(), chain2.get_id()))
-
+			rs2 = 0
 			if seq_comparison(seq1, seq2) is True:
-				print("The same chain")
 				rs_tot[rs][rs2] = 1
 			else:
 				rs_tot[rs][rs2] = 0
-				print("Not The same chain")
-			rs2 += 1
 		rs += 1
 
-	return rs_tot
+	if 1 in rs_tot[0] and 1 in rs_tot[1]:
+		return True
+	else:
+		return False
 
-#Save structure
-
-def save_complex(structure, outfile):
-	print("Saving aligned structure as PDB file %s" % outfile)
-	io = PDBIO()
-	io.set_structure(structure)
-	io.save(outfile)
 
 #Extract information from pdb files
 def get_pdb_info(pdb_files):
@@ -132,11 +141,12 @@ def get_pdb_info(pdb_files):
 	Extract structures from pdb
 	Check if we are dealing with homodimers or heterodimers
 	"""
-	p = PDBParser(PERMISSIVE=1) #initialize pdb parser
+	p = PDBParser(PERMISSIVE=1, QUIET=True) #initialize pdb parser without showing warnings
 	
 	pairwise_inter = {}
-	uniques_sequences = []
-	main_interaction = []
+	homodimer_interactions = {}
+	heterodimer_interactions = {}
+	homodimers = False
 
 	#get structures for each pdb file
 	for f in pdb_files:
@@ -148,78 +158,108 @@ def get_pdb_info(pdb_files):
 		for chain in str.get_chains():
 			seq = get_sequence(chain)
 			if seq is None:
-				str[0].detach_child(chain.id)
+				str[0].detach_child(chain.id) #delte chain from structure
 			else:
 				sequences.append(seq)
 				chains.append(chain)
-			
+		
 		if seq_comparison(sequences[0], sequences[1]): #same chains in the interaction files
-			if uniques_sequences and sequences[0] in uniques_sequences: #if we have that sequences in other interaction				
-				pairwise_inter["homodimer"].append([chains[0], chains[1]])
+			homodimers = True
+			if homodimer_interactions: #if we have that sequences in other interaction			
+				for inter_id, inter in homodimer_interactions.items():
+					if chains_comparison(inter, str): #check if it the same interaction as befor
+						#here we need to check if interactions are the same....
+						pairwise_inter[inter_id].append([chains[0], chains[1]])
+					else:
+						pairwise_inter[str_id] = [[chains[0], chains[1]]]
+						homodimer_interactions[str_id] = str
 					
 			else:
-				uniques_sequences.append(sequences[0])
-				pairwise_inter["homodimer"] = [[chains[0], chains[1]]]
-				main_interaction.append(str)
-
-			
+				pairwise_inter[str_id] = [[chains[0], chains[1]]] #first interaction
+				homodimer_interactions[str_id] = str
+		
 		else:
-			uniques_sequences.append(sequences[0])
-			uniques_sequences.append(sequences[1])
-			if "heterodimer" in pairwise_inter.keys():
-				pairwise_inter["heterodimer"].extend([chains[0], chains[1]])
+			if heterodimer_interactions:
+				for inter_id, inter in heterodimer_interactions.items():
+					if chains_comparison(inter, str): #check same interaction from heterodimer chains
+						homodimers = True
+						pairwise_inter[inter_id].append([chains[0], chains[1]])
+					else:
+						pairwise_inter[str_id] = [chains[0], chains[1]]
+						
 			else:
-				pairwise_inter["heterodimer"] = ([chains[0], chains[1]])
-
-	if "homodimer" in pairwise_inter.keys():
-		new_structure = Structure.Structure('Homodimers')
-		n = 0
-		for inter in pairwise_inter.values():
-			for chains in inter:
-				new_structure.add(Model.Model(n))
-				new_structure[n].add(chains[0])
-				new_structure[n].add(chains[1])
-				n += 1
-
+				pairwise_inter[str_id] = [chains[0], chains[1]]
+				heterodimer_interactions[str_id] = str
 	
-	if "heterodimer" in pairwise_inter.keys():
-		new_structure = Structure.Structure('Heterodimers')
-		new_structure.add(Model.Model(0))
-		n = 0
-		for chains in pairwise_inter.values():
-			for chain in chains:
-				try:
-					chain.id = alphabet[n]
-					new_structure[0].add(chain)
-				except:
-					new_structure[0].add(chain)	
-				n +=1
+	return pairwise_inter, homodimers
 
-	return new_structure, main_interaction
+#Create temporal structure
 
+def temp_structure(interaction_dic, name):
+	"""
+	Build a structure with interactions 
+	"""
+	new_structure = Structure.Structure(name)
+	n = 0
+	i = 0
+	for inter in interaction_dic.values():
+		if len(inter) > 2:
+			for chains in inter:
+				new_structure.add(Model.Model(i))
+				new_structure[i].add(chains[0])
+				new_structure[i].add(chains[1])	
+				i += 1
+		else:
+			new_structure.add(Model.Model(n))
+			new_structure[n].add(inter[0])
+			new_structure[n].add(inter[1])	
+		n += 1
+
+	return new_structure
+
+#Save structure
+
+def save_complex(structure, outfile):
+	"""
+	Save the new structure in output pdb file.
+	"""
+	print("Printing results in %s" %(outfile))
+	io = PDBIO()
+	io.set_structure(structure)
+	io.save(outfile)
 
 files = get_input(options.infile)
-structure = get_pdb_info(files)[0]
-main_structure = get_pdb_info(files)[1]
+interactions = get_pdb_info(files)[0]
+homodimers = get_pdb_info(files)[1]
 
-if structure.id == "Homodimers":
-	print("You have enter %d chains to interact" %(len(list(structure.get_chains()))))
-	n_inter = input("How much interactions do you want (enter for current files): ")
+
+if homodimers:
+	#print("You have enter %d chains to interact" %(len(list(structure.get_chains()))))
+	n_inter = ""#input("How much interactions do you want (enter for current files): ")
+	tmp_str = temp_structure(interactions, "homodimers")
 	
 	if n_inter == "":
 		print("Extracting interaction for files")
-		new_structure = homodimers.get_structure_homodimer_from_files(structure)
+		new_structure = get_structure_homodimer_from_files(tmp_str)
 		
 	else:
 		n = int(n_inter)
 		print("Extracting interaction for n interactions")
 		#chain_to_add = main_structure[0].copy()
-		new_structure = homodimers.get_structure_homodimer_from_number_interaction(main_structure, n)
+		new_structure = get_structure_homodimer_from_number_interaction(main_structure, n)
 
+	if options.outfile is None:
+		options.outfile = "homodimer.pdb"
 
-if structure.id == "Heterodimers":
-	best_aln = heterodimers.align_sequences(structure)
-	new_structure = heterodimers.superimpose_structures(structure, best_aln)
+else:
+	tmp_str = temp_structure(interactions, "heterodimers")
+	best_aln = align_sequences_heterodimers(tmp_str)
+	print(best_aln)
+	new_structure = superimpose_structures_heterodimers(tmp_str, best_aln)
+
+	if options.outfile is None:
+		options.outfile = "heterodimer.pdb"
+
 
 save_complex(new_structure, options.outfile)
 
