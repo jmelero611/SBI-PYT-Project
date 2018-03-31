@@ -181,8 +181,11 @@ Finally, the program creates and saves a PDB file with the final structure using
 \section{Restrictions and Limitations of the Program}
 
 
-For heterodimers, one of the main restrictions is that all chains must be able to be followed. That is, we must be able to build a path joining all the subunits (A-B, B-C, C-D...). If it is not like that (A-B, C-D... for example), the program will crash. This is because one chain will be used as reference chain, and the other as moving chain. If it only appears once, then it is not possible to build the structure.
-
+For heterodimers, one of the main restrictions is that all chains must be able to be followed. That is, we must be able to build a path joining all the subunits (A-B, B-C, C-D...). If it is not like that (A-B, C-D... for example), the program will crash. This is because one chain will be used as reference chain, and the other as moving chain. If it only appears once, then it is not possible to build the structure.\\\\
+There are many problem handling homodimer interactions or heterodimer interaction. The main one is that structural superimposition is not useful to rebuild the protein. Moreover, we do not consider the stoichiometry (how many repetitions there are) and we assume that, the same interaction is only once and, if it were repeated, the user will provide it again. We could ask for the stoichiometry to the user to avoid this problem, and change the code to handle this.\\\\
+The program does not work for protin-nucleotide interaction. To do this, we should analyse also nucleotide structures in PDB and change the code to work with nucleotides.\\\\
+The program does not check if the PDB files are well-formatted. If there were any error in the input files, it could rise an error at some point of the program or create an output with the wrong-formatted data that, obiously, will not correspond to the correct macro-complex. If we knew what are the most typical errors or how a PDB cannot be well-formatted, we could rise an error before the script.\\\\
+The program does not take into account proteins with less than 40 aminoacids. This is made to avoid peptide ligands. Therefore, small proteins will not be considered in the program. We could solve this if we knew the nature of the PDB structure, if ligand or protein.\\\\
 
 \chapter{How to use the program}
 
@@ -275,15 +278,18 @@ His3 is a gene of a nucleosome. Figure 4 seems to be a complex nucleosome. At le
 \section{Generalisation of the program}
 
 Generally, the program will work perfectly for non-repeated/normal heterodimers and heteropolimers defined as it was done.\\\\
-For homodimers or repeated heterodimers it is more difficult, because a structural superimposition will not rebuild the whole structure. Moreover, we cannot know the correct orientation nor the stoichiometry. For these reasons, the program may fail recontructing this kind of structures.
+For homodimers or repeated heterodimers it is more difficult, because a structural superimposition will not rebuild the whole structure. Moreover, we cannot know the correct orientation nor the stoichiometry. For these reasons, the program may fail recontructing this kind of structures.\\\\
+
 
 
 \chapter{Discussion of the project}
 
+In the project we had to understand and program usual algorithms in bioinformatics, such as sequence alignment and structural superimposition. It was a project that we were only told the title and we had to make up all the pipeline, the workflow, and the program.
+If we were in a lab, we had a real problem, with a real project and with real data (data for training and data for testing). In this project, we had not had data to train or test and for these reason we may think that our program works perfectly and actually it could not be like this. With our own examples it worked, the program finished and created well the output, but at this point there is no guarantee that the program will work for any protein, with any input files. Personally, we believe that our program does what we want, we tested it and it worked and the pipeline is coherent and theoretically it must work.\\\\
 
 \chapter{Conclusions}
 
-
+This project have helped us to understand better concepts about structural superimposition, sequence alignment and python programming. In addition, we had to do the effort for create our own data and learn to use it. We did our best and we hope the program works.
 
 %\chapter{Appendix}
 
