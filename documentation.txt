@@ -1,0 +1,70 @@
+get_input:
+
+"""
+	Handles with different kind of input:
+	 a list of pdb files
+	 a given path with files
+	 default input which is the current directory.
+
+	Returns a list of PB files.
+	
+"""
+
+get_name_structure:
+
+"""Return the name of the files without .pdb extension"""
+
+get_sequence:
+
+"""Deletes heteroatoms and returns the sequence of proteins with more than XX aminoacids. It uses CaPPBuilder package from Bio.PDB"""
+
+seq_comparison:
+
+"""
+Uses pariwise alignment to find if two sequences are similar or not.
+Returns True if percentage of identity is greater than 95%, and False if it is not.
+"""
+
+chains_comparison:
+
+"""
+Compares both chains from the the input structures.
+Return True if both sequences from one structure are similar to one or both sequences from the other structure.
+"""
+
+get_pdb_info:
+
+"""
+Extracts the structures and the sequences from PDB input files.
+Checks if we are dealing with homodimer interactions or heterodimer interactions.
+Returns the pairwise interaction and True if there are homodimers and False if there are heterodimers.
+"""
+
+temp_structure:
+
+"""Builds a new structure and fill it with the interactions. Returns the new built structure"""
+
+save_complex:
+
+"""Saves the structure into a PDB file. Uses Bio.PBIO package."""
+
+heterodimer.align_sequences_heterodimers:
+
+"""Align all sequences generated from pdb files and returns the best alignments."""
+
+heterodimer.superimpose_structures_heterodimers:
+
+"""Superimposes the input strucrures, gets the chains to create the new structure and returns the new structure superimposed."""
+
+
+
+
+
+
+
+
+
+
+
+
+
