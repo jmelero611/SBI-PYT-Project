@@ -7,7 +7,6 @@
 #Simple input file with iterations between heterodimers
 from Bio.PDB import *
 from Bio import pairwise2
-from Bio.SubsMat import MatrixInfo as matlist
 import string
 
 ###################### FUNCTIONS ########################
