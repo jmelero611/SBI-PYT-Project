@@ -263,6 +263,9 @@ else:
 
 save_complex(new_structure, options.outfile)
 
+if visualize:
+	subprocess.Popen('/usr/bin/chimera "options.outfile"', shell= True, executable="/bin/bash")
+
 
 
 
