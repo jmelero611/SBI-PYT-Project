@@ -2,6 +2,9 @@
 %\documentclass[a4paper,10pt]{scrartcl}
 
 \usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[font=footnotesize,labelfont=bf]{caption}
+\graphicspath{ {figures/} }
 
 \title{Reconstruction of a macro-complex using interacting subunits}
 \author{Lydia Fortea \and Juan Luis Melero}
@@ -23,26 +26,25 @@
 \chapter{Background}
 
 The aim of the project is to reconstruct a marco-complex having only the pair interacting chains, using a standalone program created by ourselves.
-The program we created is based on several bioinformatic features, including modelling, structural superimposition and sequence alignment, among others.
+The program we created is based on several bioinformatic features, including structural superimposition and sequence alignment, among others.
 
 \section{Protein-Protein Interaction and Complexes}
 
 An important point of the project is understanding the Protein-Protein Interaction and Complexes. In the quaternary structure of a protein, there are more than one separated chains of proteins that interacti between them.
 The interaction of these chains can involve a lot of intermolecular bounds, such as hydrogen bounds, electrostatic interactions, pi stacking, cation-pi interaction, etc. This diversity of interactions makes the protein-protein interaction
 very common in order to stabilized the molecule and generate a biological function.\\\\
-
 The whole structure, where two or more chains are combined and have one or different functions, is called a complex. The formation of a complex can be made by protein-protein interaction only or nucleotides (DNA or RNA) can also be part of a complex if there is DNA-protein or RNA-protein interactions.\\\\
-
 Focusing on the project, having the protein-protein interaction by pairs, we want to reconstruct the whole macro-complex.
+
+\section{Sequence Alignment}
+
+Pairwise sequence alignment is done for several reasons. One of them is because we want to compare the chains from the same interacting file to know if it is a homodimer or a heterodimer. Another reason is to compare different interacting files, in order to know if they are the same pair of interacting chains or they are different. The last one, is to know which chains must be superimposed, in case the interacting chains are different heterodimers (see section Modules and Packages, subsection Homodimers and Heterodimers).
 
 \section{Structural superimposition}
 
-We cannot assume that the protein-protein interacting pairs are well oriented in the space. Therefore, in order to give to each part the correct orientation, we do a structural superimposition. 
 
 
-%\section{Complex Modelling}
-
-%Modelling is the process through which having a protein sequence and one or more templates we can infer the structure of the protein. This is made by a program called \textit{Modeller}. 
+We cannot assume that the protein-protein interacting pairs are well oriented in the space. Therefore, in order to give to each part the correct orientation, we do a structural superimposition. Structural superimposition allows us to put the chains in the correct spatial orientation, and we use sequence alignment to know which chains must be superimposed. With superimposition, all the chains will be well positioned. 
 
 
 
@@ -53,32 +55,40 @@ We cannot assume that the protein-protein interacting pairs are well oriented in
 
 \subsection{Input files}
 
-There are two types of input files to the program:
+The program takes interacting pair chains for building the macro-complex. However, in the command line, the input must be one of the following:
 
 \begin{itemize}
- \item PDB files with two interacting chains
- \item For each PDB files of the interaction of two chains, PDB files of each chain separatedly.
+ \item The list of PDB file names which contains the interacting pair chains.
+ \item A directory that contains all the PDB files of interacting pair chains.
+ \item By default, if no input is indicated, it takes the current directory as input, and takes all the PDB files as interacting pair chains.
 \end{itemize}
 
-Input files must be all in the directory specified in the arguments or in the current directory by default. The program will read all the PDB files, si it is necessary that all the PDB files in the working directory are the subunits of the macrocomplex and nothing else.
+\noindent
+Input files must be all in the directory specified in the arguments or in the current directory by default. The program will read all the PDB files, so it is necessary that all the PDB files in the working directory are the subunits of the macrocomplex and nothing else.
 
 \subsection{Output file}
 
-The output file will be one PDB file in which there will be the coordinates of the atoms of the macro-complex. The output file will be located in the directory specified in the arguments. By default, it creates a file called \textit{output.pdb} in the current directory. If the current directory is the same in which there are the input files, be careful if you want to exercute the program twice or more times at the same time, since it will take the output file also as input file.
+The output file will be one PDB file in which there will be the coordinates of the atoms of the macro-complex. The output file will be located in the directory specified in the arguments. 
+Depending on the inputs (homodimer o heterodimer), the output will have different names in the current directory (homodimer.pdb or heterodimer.pdb). If the current directory is the same in which there are the input files, be careful if you want to exercute the program twice or more times at the same time, since it will take the output file also as one of the input files.
 
 
 \section{Modules and Packages}
 
-\textit{Biopython} is the principal package used, as well as \textit{sys}, \textit{os}, \textit{re}, \textit{argparse} and the self-created modules \textit{homodimers} and \textit{heterodimers}. 
+\textit{Biopython} is the principal package used, as well as \textit{sys}, \textit{os}, \textit{re}, \textit{argparse}, \textit{subprocess} and the self-created modules \textit{homodimers} and \textit{heterodimers}. 
 
 \subsection{Biopython}
 
 Biopython is the main open-source collection of tools written in Python to work with biological data. From Biopython we take the following subpackages:
 
 \begin{itemize}
- \item Bio.PDB, to work with PDB files
+ \item Bio.PDB, to work with PDB files. From Bio.PDB we use the following subpackages:
+ \begin{itemize}
+  \item PDBParser, to parse PDB files and obtain Structure Objects to work.
+  \item CaPPBuilder, to create the sequences taking into account Ca-Ca distance.
+  \item PDBIO, to save the structures into a PDB file.
+  \item Superimpose, to execute structural superimposition between structures.
+ \end{itemize}
  \item Bio.pairwise2, to align protein sequences one by one
- \item Bio.SubsMat, to import Substitution Matrices to score the alignment
 \end{itemize}
 
 
@@ -100,31 +110,78 @@ Re package in the Regular expression operations package. It allows to work with 
 
 Argparse package is the Parser for command-line options, arguments annd sub-commands. This packages allows to include the options for the user. The options included in the program are described in section \textit{Options and Arguments}.
 
+\subsection{subprocess}
+
+Subprocess package is the subprocess manager that allows us to use bash and shell commands. In our program is used to call Chimera Software if the option -vz, -{}-visualize (see section Options and Arguments) is active.
+
 \subsection{Homodimers and Heterodimers}
 
 Homodimers and Heterodimers are self-created modules which analyze the structures depending on the input files. If the pair of chains in the interacting files are the same (A-A), then it is considered \texitit{homodimer}. If the pair of chains in the interacting files are different (A-B) but all the files contain this heterodimer (files are A-B, A-B...), then it is considered \textit{repeated heterodimer}. Finally, if the pair of chains in the interacting files are different and all interacting files are different (A-B, B-C...), then it is considered \textit{heterodimer}. For homodimers and repeated heterodimers, homodimers module is used. For heterodimers, heterodimers module is used.
 
 \subsubsection{Homodimers module}
 
+
+
 \subsubsection{Heterodimers module}
 
 Heterodimers module first extract all the sequences of the chains and align them with pairwise alignment and stores the percentage of identity (\%id). Those chains with a \%id greater than 99\% are assumed to be the same and then, they are going to be superimposed. 
 Once we know which chains must be superimposed, we do so taking one as reference chain and the other as moving chain. Then the coordinates are updated and the reference chain is deleted in order not to have repeated superimposed chains. 
 
+\section{Functions}
+
+In the program there are a lot of functions that will be used during the process of building the macro-complex.
+
+\subsection{get\_input}
+
+This function handles the input argument. It uses regular expressions to find those files ended with ".pdb" and puts them into a list. If the input is a list of files, then it puts them directly into a list. The function returns a list that is the PDB interacting files that will be used to build the complex.
+
+\subsection{get\_name\_structure}
+
+This function uses regular expressions to return the filename of the PDB file.
+
+\subsection{get\_sequence}
+
+This function deletes heteroatoms and returns the sequence of the proteins with more than 40 aminoacids (to avoid ligands). It uses CaPPBuilder package.
+
+\subsection{seq\_comparison}
+
+This function is used to find identical sequences. It performs a pairwise sequence alignment and if the percentage of identity (\%id) is greater than 0.95 it returns True, else, it returns False. It uses Bio.pairwise2 package to make the alignments.
+
+\subsection{chains\_comparison}
+
+This function compares the chains of the interacting pairs and returns Frue if they are the same or False if they are different. It uses seq\_comparison function.
+
+\subsection{get\_pdb\_info}
+
+This function analyze all the PDB files from the input. It extracts and compare the structures and their sequences in order to know if we have heterodimers o homodimers. It returns the pairwise interactions and True if there are homodimer interactiond and False if there are heterodimers.
+
+\subsection{temp\_structure}
+
+This function creates a temporary structure with the interactions. It returns the built structure.
+
+\subsection{save\_complex}
+
+This function saves the structure into a PDB file. It return nothing, but creates the PDB output file. This function uses Bio.PDBIO package.
+
+\subsection{heterodimer.align\_sequences\_heterodimers}
+
+This function aligns the sequences of the chains from different PDB files. Moreover, this function decides which are the more identical sequences to superimpose afterwards.
+
+\subsection{heterodimer.superimpose\_structures\_heterodimers}
+
+This function is used to superimpose different structures. The chains that will be superimposed are those with the best alignment from \textit{heterodimer.align\_\\sequences\_heterodimers}. After the superimposition, one of the chains superimposed is removed not to have repeated chains in the structure. It returns the structures superimposed.
+
 \section{Workflow}
 
-First of all, we take the input files provided by the user. We create an empty PDB object with Bio.PDB module and we fill this empty structure with the atoms that belong to protein chains and whose sequence length is greater than 20 aminoacids (in order to avoid other ligands). \\\\
-After that, we analyze the sequence of the PDB files to decide if we treat the interaction files as homodimers (A-A interactions), repeated heterodimers (A-B, A-B...) or distinct heterodimers (A-B, B-C...).
+First of all, we take the input files provided by the user using \textit{get\_input} function. We extract the information from these PDB files to know if we are dealing with homodimers (A-A interactions), repeated heterodimers (A-B, A-B...) or distinct heterodimers (A-B, B-C...). To do that, we use \textit{get\_pdb\_info} function.\\\\
 If the interactions are homodimers (A-A) or repeated heterodimers (A-B, A-B...), then we use the standalone module \textit{homodimers.py}. If the interactions are distinct heterodimers (A-B, B-C...), then we use the module \textit{heterodimers.py}. You can see the workflow of each module in section \textit{Modules and Packages}, subsection \textit{Homodimers and Heterodimers}.\\\\
-Finally, the program creates a PDB file with the final structure. If the option visualize (-vz, --visualize) is activated, it opens the PDB with chimera (see section \textit{Options and Arguments} for requirements of this option).
+Finally, the program creates and saves a PDB file with the final structure using \textit{temp\_structure} and \textit{save\_complex} functions. If the option visualize (-vz, -{}-visualize) is activated, it opens the PDB output file with chimera (see section \textit{Options and Arguments} for requirements of this option).
+
 
 \section{Restrictions and Limitations of the Program}
 
-\subsection{Homodimer module}
 
-\subsection{Heterodimer module}
-
-One of the main restrictions of this module is that all chains must be able to be followed. That is, we must be able to build a path joining all the subunits (A-B, B-C, C-D...). If it is not like that (A-B, C-D... for example), the program will crash. This is because one chain will be used as reference chain, and the other as moving chain. If it only appears once, then it is not possible to build the structure.
+For heterodimers, one of the main restrictions is that all chains must be able to be followed. That is, we must be able to build a path joining all the subunits (A-B, B-C, C-D...). If it is not like that (A-B, C-D... for example), the program will crash. This is because one chain will be used as reference chain, and the other as moving chain. If it only appears once, then it is not possible to build the structure.
 
 
 \chapter{How to use the program}
@@ -138,18 +195,18 @@ The main program requires for \textit{Biopython} package and auxiliary modules \
 In the program the following arguments are available:
 
 \begin{itemize}
- \item -i, --input; it takes the directory as input. By default, it takes the current directory.
- \item -o, --ouput; it takes the directory and the filename of the PDB file. By default, it creates a file called \textit{output.pdb} in the current directory.
- \item -s, --sequence; it takes the directory and the filename of the FASTA file in which there is the sequence of the macro-complex. By default, it takes de value \textit{None} and runs the program with default parameters.
-% \item -vz, --visualize; if this option is active, at the end of the script it opens the output file with Chimera. It will only work if Chimera is installed and callable by python interpreter.
- \item -v, --verbose; if this option is active, it prints the log to the standard error. 
+ \item -i, -{}-input; it takes the directory as input. By default, it takes the current directory.
+ \item -o, -{}-ouput; it takes the directory and the filename of the PDB file. By default, it creates a file called \textit{output.pdb} in the current directory.
+ \item -s, -{}-sequence; it takes the directory and the filename of the FASTA file in which there is the sequence of the macro-complex. By default, it takes de value \textit{None} and runs the program with default parameters.
+ \item -v, -{}-verbose; if this option is active, it prints the log to the standard error. 
+ \item -vz, -{}-visualize; if this option is active, at the end of the script it opens the output file with Chimera. It will only work if Chimera is installed and the software is in \texttt{/usr/bin/chimera}, which is the path that the program calls Chimera Software.
 \end{itemize}
 
 All options are not forced to be, but it is highly recommended to use them, specially those related to the input/ouput files.
 
 \section{Logging}
 
-Activating the option for verbose (-v, --verbose), it prints to the standard error the log of the program. The point that are verbosed and the message if it is all right are the followings:
+Activating the option for verbose (-v, -{}-verbose), it prints to the standard error the log of the program. The point that are verbosed and the message if it is all right are the followings:
 
 \begin{itemize}
  \item 
@@ -170,11 +227,55 @@ examples. One which is an heterotrimer (heterotrimeric G protein) and one repeat
 
 \subsection{Heterotrimer}
 
-The example used is an heterotrimeric G protein, whose PDB id is 3AH8. We split it into two subunits (chain A - chain B and chain B - chain G).  
+The example used is an heterotrimeric G protein, whose PDB id is 3AH8. We split it into two subunits (chain A - chain B and chain B - chain G). These are the subunit for the heterotrimer:
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{hetero_before.jpg}
+\caption{Subunits by pairs on a heterotrimeric G protein (3AH8). On the left, interaction of chains A-B. On the right, interaction of chains B-G.}
+\label{fig:1}
+\end{figure}
+
+\noindent
+After running the program, the heterotrimeric G protein looks like que original PDB file. RMSD is 0, because is a toy model and fits perfectly.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{hetero_after.jpg}
+\caption{Complete structure of heterotrimeric G protein (3AH8), after running the program.}
+\label{fig:2}
+\end{figure}
+
+\subsection{Homodimer}
+
+The example used for homodimers is the one provided by Professor Javier Garcia. This structure represents a nucleosome ( and we were given the PDB files for interacting pairs of chains and those chains separatedly. We only use those interacting PDB files and NOT separated chains. There were 23 elements, homodimers and heterodimers repeated. Some of these interactions are represented in \ref{fig:3}.\\
+
+\begin{figure}[h]
+\includegraphics[width=0.8\textwidth]{homo_before.jpg}
+\centering
+\caption{Two examples of input files out of 23.}
+\label{fig:3}
+\end{figure}
+
+\noindent
+After running our program the final structure was the following (Figure 4).\\
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{homo_after.jpeg}
+\caption{Final structure after running the program with the subunits given.}
+\label{fig:4}
+\end{figure}
+
+\noindent
+His3 is a gene of a nucleosome. Figure 4 seems to be a complex nucleosome. At least, it has the proper shape. Therefore, although we do not know the real output, we can conclude that the program worked well.\\
+
+
 
 \section{Generalisation of the program}
 
-
+Generally, the program will work perfectly for non-repeated/normal heterodimers and heteropolimers defined as it was done.\\\\
+For homodimers or repeated heterodimers it is more difficult, because a structural superimposition will not rebuild the whole structure. Moreover, we cannot know the correct orientation nor the stoichiometry. For these reasons, the program may fail recontructing this kind of structures.
 
 
 \chapter{Discussion of the project}
