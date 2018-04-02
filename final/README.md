@@ -32,7 +32,7 @@ sudo python setup.py install
 At the end, you will be able to use it as a package and also as a script.
 
 
-##Running the program
+## Running the program
 
 To run the program use the following command:
 
