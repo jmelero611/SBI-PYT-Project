@@ -50,10 +50,12 @@ options = parser.parse_args()
 #Extract input files
 def get_input(inputs):
 	"""
-	Handling with different kind of input:
+	Handles with different kind of inputs:
 	 a list of pdb files
 	 a given path with files
 	 default input which is the current directory.
+
+	Returns a list of PDB files.
 	 """
 	motif = re.compile('.pdb$')
 	path = inputs
@@ -73,6 +75,7 @@ def get_input(inputs):
 
 #Get the name of the structure
 def get_name_structure(filename):
+	"""Parses the names of the input files and returns the name of the files without .pdb extension"""
 	p = re.compile('(.*).pdb')
 	m = p.match(filename)
 
@@ -82,8 +85,8 @@ def get_name_structure(filename):
 #Compare chains from two structures
 def chains_comparison(str1, str2):
 	"""
-	Compare both chains from each structure.
-	Return True if both sequences from str1 are similar to one or both of sequences from str
+	Compares both chains from the input structures.
+	Return True if both sequences from one structure are similar to one or both sequences from the other structure.
 	"""
 	rs = 0
 	rs_tot = [[0,0],[0,0]]
@@ -108,10 +111,11 @@ def chains_comparison(str1, str2):
 #Extract information from pdb files
 def get_pdb_info(pdb_files):
 	"""
-	Extract structures from pdd files
-	Return a dictionary with chains of all pairwise interactions
-	Return a dictionary with homodimers structures
-	Return a dictionary with heterodimers structures
+	Extracts the structures and the sequences from PDB input files.
+	The function returns three elements:
+	 Returns a dictionary with chains of all pairwise interactions
+	 Returns a dictionary with homodimers structures
+	 Returns a dictionary with heterodimers structures
 	"""
 	p = PDBParser(PERMISSIVE=1, QUIET=True) #initialize pdb parser without showing warnings
 	
@@ -170,9 +174,8 @@ def get_pdb_info(pdb_files):
 
 #Create temporal structure
 def temp_structure(interaction_dic, name):
-	"""
-	Build a structure with interactions 
-	"""
+	"""Builds a new structure and fill it with the interactions. Returns the new built structure"""
+	
 	new_structure = Structure.Structure(name)
 
 	i = 0
@@ -188,9 +191,8 @@ def temp_structure(interaction_dic, name):
 
 #Save structure
 def save_complex(structure, outfile):
-	"""
-	Save the new structure in output pdb file.
-	"""
+	"""Saves the structure into a PDB file. Uses Bio.PBIO package."""
+	
 	print("Printing results in %s" %(outfile))
 	io = PDBIO()
 	io.set_structure(structure)
