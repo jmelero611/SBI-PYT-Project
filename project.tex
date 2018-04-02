@@ -69,7 +69,7 @@ Input files must be all in the directory specified in the arguments or in the cu
 \subsection{Output file}
 
 The output file will be one PDB file in which there will be the coordinates of the atoms of the macro-complex. The output file will be located in the directory specified in the arguments. 
-Depending on the inputs (homodimer o heterodimer), the output will have different names in the current directory (homodimer.pdb or heterodimer.pdb). If the current directory is the same in which there are the input files, be careful if you want to exercute the program twice or more times at the same time, since it will take the output file also as one of the input files.
+Depending on the inputs (homodimer, heterodimer or mixed), the output will have different names in the current directory (homodimer_complex.pdb, heterodimer_complex.pdb or homodimer_heterodimer_complex.pdb if mixed). If the current directory is the same in which there are the input files, be careful if you want to exercute the program twice or more times at the same time, since it will take the output file also as one of the input files.
 
 
 \section{Modules and Packages}
@@ -120,12 +120,25 @@ Homodimers and Heterodimers are self-created modules which analyze the structure
 
 \subsubsection{Homodimers module}
 
+Homodimers module contains two functions:
 
+\begin{itemize}
+ \item get\_structure\_homodimer, that is used when the input files are all homodimers
+ \item get\_structure\_mix, that is used when the input files are homodimers and heterodimers.
+\end{itemize}
+
+\noindent
+Both functions are explained in section Function.
 
 \subsubsection{Heterodimers module}
 
-Heterodimers module first extract all the sequences of the chains and align them with pairwise alignment and stores the percentage of identity (\%id). Those chains with a \%id greater than 99\% are assumed to be the same and then, they are going to be superimposed. 
-Once we know which chains must be superimposed, we do so taking one as reference chain and the other as moving chain. Then the coordinates are updated and the reference chain is deleted in order not to have repeated superimposed chains. 
+Heterodimers module contains two function:
+
+\begin{itemize}
+ \item align\_sequences\_heterodimers
+ \item superimpose\_structures\_heterodimers
+\end{itemize}
+
 
 \section{Functions}
 
@@ -153,7 +166,7 @@ This function compares the chains of the interacting pairs and returns Frue if t
 
 \subsection{get\_pdb\_info}
 
-This function analyze all the PDB files from the input. It extracts and compare the structures and their sequences in order to know if we have heterodimers o homodimers. It returns the pairwise interactions and True if there are homodimer interactiond and False if there are heterodimers.
+This function analyze all the PDB files from the input. It extracts and compare the structures and their sequences in order to know if we have heterodimers o homodimers. It returns the pairwise interactions, the homodimer interactions and the heterodimer interactions.
 
 \subsection{temp\_structure}
 
@@ -163,18 +176,29 @@ This function creates a temporary structure with the interactions. It returns th
 
 This function saves the structure into a PDB file. It return nothing, but creates the PDB output file. This function uses Bio.PDBIO package.
 
-\subsection{heterodimer.align\_sequences\_heterodimers}
+\subsection{heterodimers.align\_sequences\_heterodimers}
 
-This function aligns the sequences of the chains from different PDB files. Moreover, this function decides which are the more identical sequences to superimpose afterwards.
+This function extracts all the sequences of the chains and aligns them with pairwise alignment and stores the percentage of identity (\%id). Those chains with a \%id greater than 99\% are assumed to be the same and then, they are going to be superimposed. 
 
-\subsection{heterodimer.superimpose\_structures\_heterodimers}
+\subsection{heterodimers.superimpose\_structures\_heterodimers}
 
-This function is used to superimpose different structures. The chains that will be superimposed are those with the best alignment from \textit{heterodimer.align\_\\sequences\_heterodimers}. After the superimposition, one of the chains superimposed is removed not to have repeated chains in the structure. It returns the structures superimposed.
+This function is used to superimpose different structures. The chains that will be superimposed are those with the best alignment from \textit{heterodimer.align\_\\sequences\_heterodimers}. 
+We do the superimposition taking one chain as reference chain and the other as moving chain. Then the coordinates are updated and the reference chain is deleted in order not to have repeated superimposed chains. 
+After the superimposition, one of the chains superimposed is removed not to have repeated chains in the structure. It returns the structures superimposed.
+
+\subsection{homodimers.get\_structure\_homodimer}
+
+This function is called when the input files are homodimers or repeated heterodimers. It superimposes the structures, taking one as reference and correcting the coordinates, and afterwards eliminates one of the superimposed chains not to have redundancies. It returns the built structure.
+
+\subsection{homodimers.get\_structure\_mix}
+
+This function is called when there is a mix between homodimers and heterodimers in the input files. First, it aligns and superimposes homodimers like function \textit{homodimers.get\_structure\_homodimer} and after that it adds heterodimers interactions, superimposing them like heterodimers module. It returns the built structure.
+
 
 \section{Workflow}
 
 First of all, we take the input files provided by the user using \textit{get\_input} function. We extract the information from these PDB files to know if we are dealing with homodimers (A-A interactions), repeated heterodimers (A-B, A-B...) or distinct heterodimers (A-B, B-C...). To do that, we use \textit{get\_pdb\_info} function.\\\\
-If the interactions are homodimers (A-A) or repeated heterodimers (A-B, A-B...), then we use the standalone module \textit{homodimers.py}. If the interactions are distinct heterodimers (A-B, B-C...), then we use the module \textit{heterodimers.py}. You can see the workflow of each module in section \textit{Modules and Packages}, subsection \textit{Homodimers and Heterodimers}.\\\\
+If the interactions are homodimers (A-A), repeated heterodimers (A-B, A-B...) or a mix of homodimers and heterodimers, then we use the standalone module \textit{homodimers.py}. If the interactions are distinct heterodimers (A-B, B-C...), then we use the module \textit{heterodimers.py}. You can see the workflow of each module in section \textit{Modules and Packages}, subsection \textit{Homodimers and Heterodimers}.\\\\
 Finally, the program creates and saves a PDB file with the final structure using \textit{temp\_structure} and \textit{save\_complex} functions. If the option visualize (-vz, -{}-visualize) is activated, it opens the PDB output file with chimera (see section \textit{Options and Arguments} for requirements of this option).
 
 
