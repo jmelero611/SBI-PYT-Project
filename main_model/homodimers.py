@@ -12,7 +12,7 @@ import copy
 #Function to build the complex for homodimers from all files
 def get_structure_homodimer(structure):
 	"""
-	Predict the structure of a homodimer of the same chains and heterodimer of two chains
+	Predicts if the structure is a homodimer or a heterodimer. Returns ????
 	"""
 	sup = Superimposer()
 	new_structure = structure.copy()
@@ -53,10 +53,10 @@ def get_structure_homodimer(structure):
 #Function to build the complex for homodimers from n interactions
 def get_structure_homodimer_heterodimer(all_interactions, homodimers, heterodimers):
 	"""
-	Predict the macrocomplex fromed by hoterodimers and homodimers.
-	It first superpose the homodimer interactions to get the right coordinates of the chains.
-	Then, it add the heterodimers interactions within the complex
-	It finally build a new structure
+	Predict the macrocomplex fromed by heterodimers and homodimers.
+	Superposes the homodimer interactions to get the right coordinates of the chains.
+	Adds the heterodimers interactions within the complex
+	Builds and returns the new structure.
 	 input: two dictionaries with the structures from both homodimers and heterodimers interactins respectively.
 	 ouput: new structure formed by those interactions.
 	"""
@@ -108,7 +108,7 @@ def get_structure_homodimer_heterodimer(all_interactions, homodimers, heterodime
 				alt_atoms = list(ref_chain.get_atoms())
 				super_imposer.set_atoms(ref_atoms, alt_atoms)
 				super_imposer.apply(list(alt_model[0].get_atoms()) + list(alt_model[1].get_atoms()))
-				sup_chains[n] = [alt_model[1]] #nose muy bien que añadir y que quitar
+				sup_chains[n] = [alt_model[1]]
 				print("RMS(ref %s, model %s) = %0.2f" % (chain1, chain, super_imposer.rms))
 				break
 
@@ -117,7 +117,7 @@ def get_structure_homodimer_heterodimer(all_interactions, homodimers, heterodime
 				alt_atoms = list(ref_chain.get_atoms())
 				super_imposer.set_atoms(ref_atoms, alt_atoms)
 				super_imposer.apply(list(alt_model[0].get_atoms()) + list(alt_model[1].get_atoms()))
-				sup_chains[n] = [alt_model[0]] #nose muy bien que añadir y que quitar
+				sup_chains[n] = [alt_model[0]] 
 				print("RMS(ref %s, model %s) = %0.2f" % (alt_model, ref_chain, super_imposer.rms))
 				break
 			else:
