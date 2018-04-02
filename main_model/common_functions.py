@@ -48,7 +48,7 @@ def seq_comparison(seq1, seq2):
 def clash_identifier(structure):
 	"""
 	Check if there is a clash within a structure
-	It returns 1 if there is no clash and 0 if there is a clash.
+	Returns the number of clashes and if there is no clash, prints it.
 	 inputs: structure we want to evaluate
 	 output: number of clashes
 	"""
@@ -61,5 +61,5 @@ def clash_identifier(structure):
 				if chain2 == chain:
 					clash += 1
 	if clash == 0:
-		print("THERE is no clash")
+		print("There is no clash")
 	return clash
