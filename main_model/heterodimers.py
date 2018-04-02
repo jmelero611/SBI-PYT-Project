@@ -16,7 +16,7 @@ from common_functions import *
 ##Function to align sequences from chains
 def align_sequences_heterodimers(structure):
 	"""
-	Align all sequences generated from pdb files and get the best alignments.
+	Align all sequences generated from PDB files and returns the best alignments.
 	 input: structure from which we want to perform the alignments
 	 output: the ids of the best alignments
 	"""
@@ -50,7 +50,7 @@ def align_sequences_heterodimers(structure):
 ## Function to superimpose sequences aligned
 def superimpose_structures_heterodimers(structure, best_aln):
 	"""
-	Superimpose structures from the best alginments.
+	Superimposes the best alignments from the input structures, gets the chains to create the new structure and returns the new structure superimposed.
 	 input: structure with all the chains and a list with the chains we want to superimpose
 	 output: structure with the correct coordinates of the macrocomplex
 	"""
