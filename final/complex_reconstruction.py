@@ -225,8 +225,13 @@ if __name__ == "__main__":
 
 	save_complex(new_structure, options.outfile)
 
+	if options.verbose:
+		sys.stderr.write("Results printed in the PDB file: %s.\nProgram finished successfully." %(options.outfile))	
+	
 	if options.visualize:
 		subprocess.Popen('/usr/bin/chimera "options.outfile"', shell= True, executable="/bin/bash")
+		if options.verbose:
+			sys.stderr.write("Opening PDB file: %s in Chimera" %(options.outfile))
 
 
 		
