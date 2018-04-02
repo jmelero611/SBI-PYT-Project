@@ -8,7 +8,8 @@ from Bio import pairwise2
 #Get sequence from chain taking into account alpha carbons
 def get_sequence(chain):
 	"""
-	Get sequence from chain with its alpha carbons
+	Deletes heteroatoms and returns the sequence of proteins with more than 30 aminoacids from their alpha carbons. 
+	It uses CaPPBuilder package from Bio.PDB.
 	""" 
 	ppb = CaPPBuilder()
 	residues_to_remove = []
@@ -30,8 +31,8 @@ def get_sequence(chain):
 #Compare chain sequences
 def seq_comparison(seq1, seq2):
 	"""
-	Use Pairwise alignment to align to sequences.
-	Return True if similar and False if not.
+	Uses pariwise alignment to align a pair of sequences to find if two sequences are similar or not.
+	Returns True if percentage of identity is greater than 95%, and False if it is not.
 	"""
 	alignment = pairwise2.align.globalxx(seq1, seq2)
 	score = alignment[0][2]
