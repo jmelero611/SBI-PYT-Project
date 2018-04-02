@@ -12,9 +12,8 @@ import copy
 #Function to build the complex for homodimers from all files
 def get_structure_homodimer(structure):
 	"""
-	Predicts if the structure is a homodimer or a heterodimer. 
-	If the structure is a homodimer, returns the structure of the homodimer superimposed.
-	If the structure is a heterodimer, returns the structure of the heterodimer.
+	Builds the structure when the input are homodimers.
+	Returns the complete predicted structure.
 	"""
 	sup = Superimposer()
 	new_structure = structure.copy()
