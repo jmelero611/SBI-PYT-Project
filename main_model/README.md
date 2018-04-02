@@ -36,7 +36,7 @@ At the end, you will be able to use it as a package and also as a script.
 To run the program use the following command:
 
 ```
-python complex_reconstruction.py -i [inputs] -o [outputs] -v -vz
+python complex_reconstruction.py -i [inputs] -o [output] -v -vz
 ```
 
 All functions are optionals, but it is important to write inputs and outputs. 
