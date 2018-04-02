@@ -1,7 +1,13 @@
-\documentclass[a4paper,12pt]{report}
-%\documentclass[a4paper,10pt]{scrartcl}
+\documentclass[a4paper,10pt]{report}
 
 \usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=magenta,      
+    urlcolor=black,
+}
 \usepackage{graphicx}
 \usepackage[font=footnotesize,labelfont=bf]{caption}
 \graphicspath{ {figures/} }
@@ -114,13 +120,13 @@ Argparse package is the Parser for command-line options, arguments annd sub-comm
 
 Subprocess package is the subprocess manager that allows us to use bash and shell commands. In our program is used to call Chimera Software if the option -vz, -{}-visualize (see section Options and Arguments) is active.
 
-\subsection{Homodimers and Heterodimers}
+\subsection{Homodimers, Heterodimers and Common Functions}
 
 Homodimers and Heterodimers are self-created modules which analyze the structures depending on the input files. If the pair of chains in the interacting files are the same (A-A), then it is considered \texitit{homodimer}. If the pair of chains in the interacting files are different (A-B) but all the files contain this heterodimer (files are A-B, A-B...), then it is considered \textit{repeated heterodimer}. Finally, if the pair of chains in the interacting files are different and all interacting files are different (A-B, B-C...), then it is considered \textit{heterodimer}. For homodimers and repeated heterodimers, homodimers module is used. For heterodimers, heterodimers module is used.
 
 \subsubsection{Homodimers module}
 
-Homodimers module contains two functions:
+Homodimers module (\textit{homodimers.py}) contains two functions:
 
 \begin{itemize}
  \item get\_structure\_homodimer, that is used when the input files are all homodimers
@@ -128,21 +134,39 @@ Homodimers module contains two functions:
 \end{itemize}
 
 \noindent
-Both functions are explained in section Function.
+Both functions are explained in section Functions.
 
 \subsubsection{Heterodimers module}
 
-Heterodimers module contains two function:
+Heterodimers module (\textit{heterodimers.py}) contains two function:
 
 \begin{itemize}
  \item align\_sequences\_heterodimers
  \item superimpose\_structures\_heterodimers
 \end{itemize}
 
+\noindent
+Both functions are explained in section Functions.
+
+\subsubsection{Common Functions Module}
+
+Common functions module (\textit{common\_functions.py}) is a module that contains general functions that will be used during the program. This functions are:
+
+\begin{itemize}
+ \item get\_sequence
+ \item seq\_comparison
+ \item chains\_comparison
+ \item temp\_structure
+ \item clash\_identifier
+ \item save\_complex
+\end{itemize}
+
+\noindent
+All these functions are explained in section Functions.
 
 \section{Functions}
 
-In the program there are a lot of functions that will be used during the process of building the macro-complex.
+In the program there are a lot of functions that will be used during the process of building the macro-complex. These functions are explained below.
 
 \subsection{get\_input}
 
@@ -152,15 +176,15 @@ This function handles the input argument. It uses regular expressions to find th
 
 This function uses regular expressions to return the filename of the PDB file.
 
-\subsection{get\_sequence}
+\subsection{common\_functions.get\_sequence}
 
 This function deletes heteroatoms and returns the sequence of the proteins with more than 40 aminoacids (to avoid ligands). It uses CaPPBuilder package.
 
-\subsection{seq\_comparison}
+\subsection{common\_functions.seq\_comparison}
 
 This function is used to find identical sequences. It performs a pairwise sequence alignment and if the percentage of identity (\%id) is greater than 0.95 it returns True, else, it returns False. It uses Bio.pairwise2 package to make the alignments.
 
-\subsection{chains\_comparison}
+\subsection{common\_functions.chains\_comparison}
 
 This function compares the chains of the interacting pairs and returns Frue if they are the same or False if they are different. It uses seq\_comparison function.
 
@@ -168,11 +192,15 @@ This function compares the chains of the interacting pairs and returns Frue if t
 
 This function analyze all the PDB files from the input. It extracts and compare the structures and their sequences in order to know if we have heterodimers o homodimers. It returns the pairwise interactions, the homodimer interactions and the heterodimer interactions.
 
-\subsection{temp\_structure}
+\subsection{common\_functions.temp\_structure}
 
 This function creates a temporary structure with the interactions. It returns the built structure.
 
-\subsection{save\_complex}
+\subsection{common\_functions.clash\_indentifier}
+
+This function checks the final structure if there were any clash. It returns True if there are clashes or False if there is not any clash. If there were any clash, the chain is not added.
+
+\subsection{common\_functions.save\_complex}
 
 This function saves the structure into a PDB file. It return nothing, but creates the PDB output file. This function uses Bio.PDBIO package.
 
@@ -210,12 +238,15 @@ There are many problem handling homodimer interactions or heterodimer interactio
 The program does not work for protin-nucleotide interaction. To do this, we should analyse also nucleotide structures in PDB and change the code to work with nucleotides.\\\\
 The program does not check if the PDB files are well-formatted. If there were any error in the input files, it could rise an error at some point of the program or create an output with the wrong-formatted data that, obiously, will not correspond to the correct macro-complex. If we knew what are the most typical errors or how a PDB cannot be well-formatted, we could rise an error before the script.\\\\
 The program does not take into account proteins with less than 40 aminoacids. This is made to avoid peptide ligands. Therefore, small proteins will not be considered in the program. We could solve this if we knew the nature of the PDB structure, if ligand or protein.\\\\
+We only create one model. There program could generate many models and compare them (e.g. analysing the energy) and then choose the best structure. Moreover, there is no evaluation of the quality of the model and the structure created.\\\\
+If different chains have the same name, they are added as new structures. This is done because Chimera has problems recognizing differet chains with the same name. Therefore, although they could be the same chain, the name is changed.\\\\
+
 
 \chapter{How to use the program}
 
 \section{Requirements}
 
-The main program requires for \textit{Biopython} package and auxiliary modules \textit{homodimers.py} and \textit{heterodimers.py}.
+The main program requires for \textit{Biopython} package and auxiliary modules \textit{homodimers.py}, \textit{heterodimers.py} and \textit{common\_functions.py}, as well as all preinstalled Python packages indicated in \textit{Modules and Packages} section.
 
 \section{Options and Arguments}
 
@@ -236,7 +267,13 @@ All options are not forced to be, but it is highly recommended to use them, spec
 Activating the option for verbose (-v, -{}-verbose), it prints to the standard error the log of the program. The point that are verbosed and the message if it is all right are the followings:
 
 \begin{itemize}
- \item 
+ \item Warning for files that were not analyzed because they were wrong.
+ \item Print how many files are going to be analyzed.
+ \item Prints if the input files are all homodimers, all heterodimers or a mix between homodimers and heterodimers and how many interactions there are.
+ \item If there are no files because of any problem, it advise you to revise the pairwise interactions.
+ \item Prints the percentage of identity of the best alignments and RMSD of the superimpositions.
+ \item Prints where are the results stored, the output file.
+ \item Tells you when the program finishes successfully.
 \end{itemize}
 
 \section{Running the program}
@@ -249,17 +286,16 @@ To run the program in the terminal:\\ \texttt{\$ python3 main.py -i [input files
 
 \section{Tested examples}
 
-We tested two %three
-examples. One which is an heterotrimer (heterotrimeric G protein) and one repeated dimer (the example provided by Python teacher).
+We tested two examples. One which is an heterotrimer (heterotrimeric G protein) and one repeated dimer (the example provided by Python teacher).
 
 \subsection{Heterotrimer}
 
-The example used is an heterotrimeric G protein, whose PDB id is 3AH8. We split it into two subunits (chain A - chain B and chain B - chain G). These are the subunit for the heterotrimer:
+The example used is an heterotrimeric G protein, whose PDB id is \href{https://www.rcsb.org/structure/3ah8}{(3AH8)}. We split it into two subunits (chain A - chain B and chain B - chain G). These are the subunit for the heterotrimer:
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.8\textwidth]{hetero_before.jpg}
-\caption{Subunits by pairs on a heterotrimeric G protein (3AH8). On the left, interaction of chains A-B. On the right, interaction of chains B-G.}
+\caption{Subunits by pairs on a heterotrimeric G protein \href{https://www.rcsb.org/structure/3ah8}{(3AH8)}. On the left, interaction of chains A-B. On the right, interaction of chains B-G.}
 \label{fig:1}
 \end{figure}
 
@@ -273,9 +309,11 @@ After running the program, the heterotrimeric G protein looks like que original 
 \label{fig:2}
 \end{figure}
 
+\newpage
+
 \subsection{Homodimer}
 
-The example used for homodimers is the one provided by Professor Javier Garcia. This structure represents a nucleosome ( and we were given the PDB files for interacting pairs of chains and those chains separatedly. We only use those interacting PDB files and NOT separated chains. There were 23 elements, homodimers and heterodimers repeated. Some of these interactions are represented in \ref{fig:3}.\\
+The example used for homodimers is the one provided by Professor Javier Garcia. This structure represents a nucleosome (and we were given the PDB files for interacting pairs of chains and those chains separatedly. We only use those interacting PDB files and NOT separated chains. There were 23 elements, homodimers and heterodimers repeated. Some of these interactions are represented in Figure~\ref{fig:3}.\\
 
 \begin{figure}[h]
 \includegraphics[width=0.8\textwidth]{homo_before.jpg}
@@ -285,7 +323,7 @@ The example used for homodimers is the one provided by Professor Javier Garcia. 
 \end{figure}
 
 \noindent
-After running our program the final structure was the following (Figure 4).\\
+After running our program the final structure was the following (Figure~\ref{fig:4}).\\
 
 \begin{figure}[h]
 \centering
@@ -295,7 +333,7 @@ After running our program the final structure was the following (Figure 4).\\
 \end{figure}
 
 \noindent
-His3 is a gene of a nucleosome. Figure 4 seems to be a complex nucleosome. At least, it has the proper shape. Therefore, although we do not know the real output, we can conclude that the program worked well.\\
+His3 is a gene of a nucleosome. Figure~\ref{fig:4} seems to be a complex nucleosome. At least, it has the proper shape. Therefore, although we do not know the real output, we can conclude that the program worked well.\\
 
 
 
@@ -314,13 +352,6 @@ If we were in a lab, we had a real problem, with a real project and with real da
 \chapter{Conclusions}
 
 This project have helped us to understand better concepts about structural superimposition, sequence alignment and python programming. In addition, we had to do the effort for create our own data and learn to use it. We did our best and we hope the program works.
-
-%\chapter{Appendix}
-
-%\section{Script}
-
-%\section{README}
-
 
 
 
