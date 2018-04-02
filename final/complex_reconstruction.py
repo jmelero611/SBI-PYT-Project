@@ -176,7 +176,7 @@ if __name__ == "__main__":
 				else:
 					sys.stderr.write("\tThe file %s because it is not a pdb file\n" %(file))
 		
-		sys.stderr.write("The following %i files were analizing: \n" %(len(files) - len(wrong_files)))
+		sys.stderr.write("The following %i files are going to be analyzed: \n" %(len(files) - len(wrong_files)))
 		for file in files:
 			if file not in wrong_files:
 				sys.stderr.write("\t- %s\n" %(file))
@@ -216,7 +216,7 @@ if __name__ == "__main__":
 			options.outfile = "homodimer_heterodimer_complex.pdb"
 
 	else:
-		sys.stderr.write("All the files introduced are not valid. Please check they are pairwise interaction pdb files")
+		sys.stderr.write("All the files introduced are not valid. Please check if there are pairwise interaction PDB files")
 		exit()
 
 	#Save the structure in a pdb file
