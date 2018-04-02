@@ -221,7 +221,7 @@ if bool(homodimer_interactions) and not bool(heterodimer_interactions):
 
 elif bool(homodimer_interactions) and bool(heterodimer_interactions):
 	print("The pdf file contains both homodimer and heterodimer interactions")
-	new_structure = get_structure_prot_mix(interactions, homodimer_interactions, heterodimer_interactions)
+	new_structure = get_structure_homodimer_heterodimer(interactions, homodimer_interactions, heterodimer_interactions)
 
 	if options.outfile is None:
 		options.outfile = "homodimer_heterodimer_complex.pdb"
