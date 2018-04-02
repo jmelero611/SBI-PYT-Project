@@ -53,7 +53,7 @@ def get_structure_homodimer(structure):
 
 
 #Function to build the complex for homodimers from n interactions
-def get_structure_homodimer_heterodimer(all_interactions, homodimers, heterodimers):
+def get_structure_mix(all_interactions, homodimers, heterodimers):
 	"""
 	Predict the macrocomplex fromed by heterodimers and homodimers.
 	Superposes the homodimer interactions to get the right coordinates of the chains.
