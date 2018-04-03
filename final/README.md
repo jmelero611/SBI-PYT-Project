@@ -26,11 +26,10 @@ tar -xzfcv complex_reconstr.tar.gz
 Change the directory to the folder and execute setup script:
 
 ```
-sudo python3 setup.py install
+sudo python setup.py install
 ```
 
 At the end, you will be able to use it as a package and also as a script.
-
 
 ## Running the program
 
