@@ -230,10 +230,10 @@ if __name__ == "__main__":
 		save_complex(new_structure, options.outfile)
 		if options.verbose:
 			sys.stderr.write("Printing the results in the PDB file: %s\n" %(options.outfile))
-			sys.stderr.write("The program has finished\n")
+			sys.stderr.write("The program has finished corrrectly\n")
 	else:
 		if options.verbose:
-			sys.stderr.write("An error have happened during the construction")
+			sys.stderr.write("An error have happened during the construction\n")
 		exit()
 
 	if options.visualize:
