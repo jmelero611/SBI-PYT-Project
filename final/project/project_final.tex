@@ -122,7 +122,7 @@ Subprocess package is the subprocess manager that allows us to use bash and shel
 
 \subsection{Homodimers, Heterodimers and Common Functions}
 
-Homodimers and Heterodimers are self-created modules which build the structures depending on the input files. If the pair of chains in the interacting files are the same (A-A), then it is considered \texitit{homodimer}. If the pair of chains in the interacting files are different (A-B) but all the files contain this heterodimer (files are A-B, A-B...), then it is considered \textit{repeated heterodimer}. If the pair of chains in the interacting files are different and all interacting files are different (A-B, B-C...), then it is considered \textit{heterodimer}. Finally, if the pair of chains in the interacting files contains both homodimers and heterodimers interactions (A-A, A-B), then it is considered a \texit{mixed complex}. For homodimers, repeated heterodimers and mixed complex, homodimers module is used. For heterodimers, heterodimers module is used.
+Homodimers and Heterodimers are self-created modules which build the structures depending on the input files. If the pair of chains in the interacting files are the same (A-A), then it is considered \texitit{homodimer}. If the pair of chains in the interacting files are different and all interacting files are different (A-B, B-C...), then it is considered \textit{heterodimer}. Finally, if the pair of chains in the interacting files contains both homodimers and heterodimers interactions (A-A, A-B), then it is considered a \texit{mixed complex}. For homodimers, repeated heterodimers and mixed complex, homodimers module is used. For heterodimers, heterodimers module is used.
 
 \subsubsection{Homodimers module}
 
@@ -206,21 +206,21 @@ This function saves the new structure into a PDB file. It return nothing, but cr
 
 \subsection{heterodimers.align\_sequences\_heterodimers}
 
-This function extracts all the sequences of the chains in the structure, performs a pairwise alignment and stores the ids of those alignments with a percentage of identity (\%id) greater than 99\%, that are assumed to be the same chain and then, they are going to be superimposed. 
+This function extracts all the sequences of the chains in the entered structure, performs a pairwise alignment and stores the ids of those alignments with a percentage of identity (\%id) greater than 99\%, that are assumed to be the same chain and then, they are going to be superimposed. 
 
 \subsection{heterodimers.superimpose\_structures\_heterodimers}
 
-This function is used to superimpose different structures. The chains that will be superimposed are those with the best alignment from \textit{heterodimer.align\_\\sequences\_heterodimers}. 
+This function is used to superimpose different structures. The chains that will be superimposed from the structure are those given by the best alignment from \textit{heterodimer.align\_\\sequences\_heterodimers}. 
 We do the superimposition taking one chain as reference, and the other as moving chain. Then the coordinates for the new interaction are updated and the chain used for superimposition is deleted in order not to have repeated superimposed chains. 
 After the superimposition, it use \textit{common\_functions.clash\_identifier} in order to add the new chain, and not to have repeated chains in the structure. It returns the structures superimposed.
 
 \subsection{homodimers.get\_structure\_homodimer}
 
-This function is called when the input files are homodimers or repeated heterodimers. It superimposes the structures, taking the first one as reference and correcting the coordinates from the others, and afterwards check if there is any clash with  \textit{common\_functions.clash\_identifier} in order to add the new chain and not to have redundancies. It returns the built structure.
+This function is called when the input files are homodimers. It superimposes the structures, taking the first one as reference and correcting the coordinates from the others, and afterwards check if there is any clash with  \textit{common\_functions.clash\_identifier} in order to add the new chain and not to have redundancies. It returns the built structure.
 
 \subsection{homodimers.get\_structure\_homodimer\_heterodimer}
 
-This function is called when there both types of interactions, homodimers and heterodimers, in the input files. First, it superimposes homodimers interactions like function \textit{homodimers.get\_structure\_homodimer} to build a dictionary with the superposed chains, and after that it adds heterodimers interactions within them, by aligned and superimposing them like heterodimers module. Finally, it check if there is any clash when adding a new chain with \textit{common\_functions.clash\_identifier}. It returns the built structure.
+This function is called when there both types of interactions, homodimers and heterodimers, in the input files. It needs all pairwise interactions and homodimers and heterodimers structures separately. First, it superimposes homodimers interactions like function \textit{homodimers.get\_structure\_homodimer} to build a dictionary with the superposed chains, and after that it adds heterodimers interactions within them, by aligned and superimposing them like heterodimers module. Finally, it check if there is any clash when adding a new chain with \textit{common\_functions.clash\_identifier}. It returns the built structure.
 
 
 \section{Workflow}
@@ -398,20 +398,17 @@ After running our program the final structure was the following (Figure~\ref{fig
 As we can observe, the build complex obtained in Figure~\ref{fig:8} seems not to be a viral comples. That is because, the program have only build the complex with the given chains, and to build a good one, we need all the repeated interactions. This a limitation of our program commented in section \textit{Restrictions and Limitations of the program}.\\
 
 
-\section{Generalisation of the program}
-
-Generally, the program will work perfectly for non-repeated/normal heterodimers and heteropolimers defined as it was done.\\\\
-For homodimers or repeated heterodimers it is more difficult, because a structural superimposition will not rebuild the whole structure if the user doen't provide all of them. Moreover, we cannot know the correct orientation nor the stoichiometry. For these reasons, the program may fail recontructing this kind of structures.\\\\
-
-
 \chapter{Discussion of the project}
 
-In the project we had to understand and program usual algorithms in bioinformatics, such as sequence alignment, structural superimposition and protein-prootein. It was a project that we were only told the title and we had to make up all the pipeline, the workflow, and the program. We also had to decide what kind of interactions we can model or not.
-If we were in a laboratory, we had a real problem, with a real project and with real data (data for training and data for testing). In this project, we had not had real data to train or test and for these reason we may think that our program works correctly and actually it could not be like this. With our own examples it almost worked, the program finished and created well the output, but as we can see in the last example, there is no guarantee that the program will work for any protein, with any input files. Personally, we believe that our program does what we want, we tested it and it worked and the pipeline is coherent and theoretically it must work.\\\\
+In the project we had to understand and program usual algorithms in bioinformatics, such as sequence alignmen and structural superimposition from protein-protein interactions. It was a project that we were only told the title and we had to make up all the pipeline, the workflow, and the program. We also had to decide what kind of interactions we can model or not, since there are a lot of combination and possibles kind of inputs.
+
+Generally, the program seems work correctly for basic heterodimer or homodimers. But with more complex structures it might fail, because a structural superimposition will not rebuild the whole structure if the user doen't provide all of the interactions that forms the given complex. Moreover, we cannot know the correct orientation, the stoichiometry or the quality of the new structure. For all these reasons, the program have several limitation that should have considered for better applications.\\\\
 
 \chapter{Conclusions}
 
-This project have helped us to understand better concepts about structural superimposition, sequence alignment and python programming. In addition, we had to do the effort for create our own data and learn to use it. We did our best and we hope the program works.
+This project have helped us to understand better teorical and practical concepts about structural superimposition, sequence alignment and protein interaction. Moreover, we learn how to apply python programming to real problems, being able to find the information we need, apply several built-packages, deal with different kinds of programming problems, handling errors and create our own modules. \\\
+
+As we had not real data to train or test, as we had to create our own input data, and for these reason we may think that our program works correctly and actually it could not be like this. There is no guarantee that the program will work for any protein, with any input files.\\\
 
 
 
