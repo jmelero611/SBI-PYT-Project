@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.11.23)  3 APR 2018 17:02
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.11.23)  3 APR 2018 20:32
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -589,7 +589,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.41 ... program on the terminal}{12}{section.3.5}
+l.41 ... program on the terminal}{13}{section.3.5}
                                                    [1
 
 ])
@@ -608,21 +608,31 @@ Underfull \hbox (badness 10000) in paragraph at lines 39--44
 
  []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 53--56
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 53--56
+
+ []
+
 [3
 
 ] [4]
 Chapter 2.
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 67.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 69.
 (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 67.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 69.
  [5
 
 ]
 ! Undefined control sequence.
-l.125 ...ame (A-A), then it is considered \texitit
+l.127 ...ame (A-A), then it is considered \texitit
                                                   {homodimer}. If the pair o...
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -631,7 +641,7 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 ! Undefined control sequence.
-l.125 ...A-A, A-B), then it is considered a \texit
+l.127 ...A-A, A-B), then it is considered a \texit
                                                   {mixed complex}. For homod...
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -640,99 +650,99 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 [6] [7]
-Overfull \hbox (1.09126pt too wide) in paragraph at lines 193--194
+Overfull \hbox (1.09126pt too wide) in paragraph at lines 195--196
 \OT1/cmr/m/n/10 they are the same in-ter-ac-tion or False if they are dif-fer-e
 nt. It uses seq[]comparison
  []
 
 [8]
-Overfull \hbox (3.7048pt too wide) in paragraph at lines 211--211
+Overfull \hbox (3.7048pt too wide) in paragraph at lines 213--213
 []\OT1/cmr/bx/n/12 heterodimers.superimpose[]structures[]heterodimers 
  []
 
 
-Overfull \hbox (4.30643pt too wide) in paragraph at lines 221--221
+Overfull \hbox (4.30643pt too wide) in paragraph at lines 223--223
 []\OT1/cmr/bx/n/12 homodimers.get[]structure[]homodimer[]heterodimer 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 228--231
+Underfull \hbox (badness 10000) in paragraph at lines 230--233
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 228--231
+Underfull \hbox (badness 10000) in paragraph at lines 230--233
 
  []
 
 [9]
-Underfull \hbox (badness 10000) in paragraph at lines 236--243
+Underfull \hbox (badness 10000) in paragraph at lines 238--245
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 236--243
+Underfull \hbox (badness 10000) in paragraph at lines 238--245
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 236--243
+Underfull \hbox (badness 10000) in paragraph at lines 238--245
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 236--243
+Underfull \hbox (badness 10000) in paragraph at lines 238--245
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 236--243
+Underfull \hbox (badness 10000) in paragraph at lines 238--245
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 236--243
+Underfull \hbox (badness 10000) in paragraph at lines 238--245
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 236--243
+Underfull \hbox (badness 10000) in paragraph at lines 238--245
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 236--243
+Underfull \hbox (badness 10000) in paragraph at lines 238--245
 
  []
 
 [10] [11]
 Chapter 3.
 
-Underfull \hbox (badness 10000) in paragraph at lines 254--257
+Underfull \hbox (badness 10000) in paragraph at lines 256--259
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 254--257
+Underfull \hbox (badness 10000) in paragraph at lines 256--259
 
  []
 
 [12
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 289--291
+Underfull \hbox (badness 10000) in paragraph at lines 291--293
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 289--291
+Underfull \hbox (badness 10000) in paragraph at lines 291--293
 
  []
 
 [13]
 Chapter 4.
 
-LaTeX Warning: File `hetero_before.jpg' not found on input line 307.
+LaTeX Warning: File `hetero_before.jpg' not found on input line 309.
 
 
 ! Package pdftex.def Error: File `hetero_before.jpg' not found.
@@ -741,7 +751,7 @@ See the pdftex.def package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.307 ...s[width=0.8\textwidth]{hetero_before.jpg}
+l.309 ...s[width=0.8\textwidth]{hetero_before.jpg}
                                                   
 Using draft setting for this image.
 Try typing  <return>  to proceed.
@@ -751,7 +761,7 @@ If that doesn't work, type  X <return>  to quit.
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-LaTeX Warning: File `hetero_after.jpg' not found on input line 317.
+LaTeX Warning: File `hetero_after.jpg' not found on input line 319.
 
 
 ! Package pdftex.def Error: File `hetero_after.jpg' not found.
@@ -760,7 +770,7 @@ See the pdftex.def package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.317 ...cs[width=0.8\textwidth]{hetero_after.jpg}
+l.319 ...cs[width=0.8\textwidth]{hetero_after.jpg}
                                                   
 Using draft setting for this image.
 Try typing  <return>  to proceed.
@@ -772,12 +782,12 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 [14
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 326--327
+Underfull \hbox (badness 10000) in paragraph at lines 328--329
 
  []
 
 
-LaTeX Warning: File `homo_before.jpg' not found on input line 329.
+LaTeX Warning: File `homo_before.jpg' not found on input line 331.
 
 
 ! Package pdftex.def Error: File `homo_before.jpg' not found.
@@ -786,7 +796,7 @@ See the pdftex.def package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.329 ...ics[width=0.8\textwidth]{homo_before.jpg}
+l.331 ...ics[width=0.8\textwidth]{homo_before.jpg}
                                                   
 Using draft setting for this image.
 Try typing  <return>  to proceed.
@@ -796,12 +806,12 @@ If that doesn't work, type  X <return>  to quit.
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 335--337
+Underfull \hbox (badness 10000) in paragraph at lines 337--339
 
  []
 
 
-LaTeX Warning: File `homo_after.jpeg' not found on input line 340.
+LaTeX Warning: File `homo_after.jpeg' not found on input line 342.
 
 
 ! Package pdftex.def Error: File `homo_after.jpeg' not found.
@@ -810,7 +820,7 @@ See the pdftex.def package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.340 ...ics[width=0.8\textwidth]{homo_after.jpeg}
+l.342 ...ics[width=0.8\textwidth]{homo_after.jpeg}
                                                   
 Using draft setting for this image.
 Try typing  <return>  to proceed.
@@ -820,22 +830,22 @@ If that doesn't work, type  X <return>  to quit.
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 345--347
+Underfull \hbox (badness 10000) in paragraph at lines 347--349
 
  []
 
 [15]
-Underfull \hbox (badness 10000) in paragraph at lines 352--354
+Underfull \hbox (badness 10000) in paragraph at lines 354--356
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 352--354
+Underfull \hbox (badness 10000) in paragraph at lines 354--356
 
  []
 
 
-LaTeX Warning: File `mix1_before.jpg' not found on input line 356.
+LaTeX Warning: File `mix1_before.jpg' not found on input line 358.
 
 
 ! Package pdftex.def Error: File `mix1_before.jpg' not found.
@@ -844,7 +854,7 @@ See the pdftex.def package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.356 ...ics[width=0.8\textwidth]{mix1_before.jpg}
+l.358 ...ics[width=0.8\textwidth]{mix1_before.jpg}
                                                   
 Using draft setting for this image.
 Try typing  <return>  to proceed.
@@ -854,12 +864,12 @@ If that doesn't work, type  X <return>  to quit.
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 362--364
+Underfull \hbox (badness 10000) in paragraph at lines 364--366
 
  []
 
 
-LaTeX Warning: File `mix1_after.jpg' not found on input line 367.
+LaTeX Warning: File `mix1_after.jpg' not found on input line 369.
 
 
 ! Package pdftex.def Error: File `mix1_after.jpg' not found.
@@ -868,7 +878,7 @@ See the pdftex.def package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.367 ...hics[width=0.8\textwidth]{mix1_after.jpg}
+l.369 ...hics[width=0.8\textwidth]{mix1_after.jpg}
                                                   
 Using draft setting for this image.
 Try typing  <return>  to proceed.
@@ -878,22 +888,22 @@ If that doesn't work, type  X <return>  to quit.
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [16]
-Underfull \hbox (badness 10000) in paragraph at lines 374--376
+Underfull \hbox (badness 10000) in paragraph at lines 376--378
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 374--376
+Underfull \hbox (badness 10000) in paragraph at lines 376--378
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 377--379
+Underfull \hbox (badness 10000) in paragraph at lines 379--381
 
  []
 
 
-LaTeX Warning: File `mix2_before.jpg' not found on input line 381.
+LaTeX Warning: File `mix2_before.jpg' not found on input line 383.
 
 
 ! Package pdftex.def Error: File `mix2_before.jpg' not found.
@@ -902,7 +912,7 @@ See the pdftex.def package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.381 ...ics[width=0.8\textwidth]{mix2_before.jpg}
+l.383 ...ics[width=0.8\textwidth]{mix2_before.jpg}
                                                   
 Using draft setting for this image.
 Try typing  <return>  to proceed.
@@ -912,12 +922,12 @@ If that doesn't work, type  X <return>  to quit.
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 387--389
+Underfull \hbox (badness 10000) in paragraph at lines 389--391
 
  []
 
 
-LaTeX Warning: File `mix2_after.jpg' not found on input line 392.
+LaTeX Warning: File `mix2_after.jpg' not found on input line 394.
 
 
 ! Package pdftex.def Error: File `mix2_after.jpg' not found.
@@ -926,7 +936,7 @@ See the pdftex.def package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.392 ...hics[width=0.8\textwidth]{mix2_after.jpg}
+l.394 ...hics[width=0.8\textwidth]{mix2_after.jpg}
                                                   
 Using draft setting for this image.
 Try typing  <return>  to proceed.
@@ -936,40 +946,19 @@ If that doesn't work, type  X <return>  to quit.
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 397--399
-
- []
-
-
-Overfull \hbox (3.40344pt too wide) in paragraph at lines 403--405
-\OT1/cmr/m/n/10 Generally, the pro-gram will work per-fectly for non-repeated/n
-ormal het-erodimers
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 403--405
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 403--405
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 403--405
+Underfull \hbox (badness 10000) in paragraph at lines 399--401
 
  []
 
 [17] [18] [19] [20] [21] [22]
 Chapter 5.
 
-Underfull \hbox (badness 10000) in paragraph at lines 409--411
+Underfull \hbox (badness 10000) in paragraph at lines 407--408
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 409--411
+Underfull \hbox (badness 10000) in paragraph at lines 407--408
 
  []
 
@@ -977,30 +966,36 @@ Underfull \hbox (badness 10000) in paragraph at lines 409--411
 
 ]
 Chapter 6.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 419.
+
+Underfull \hbox (badness 10000) in paragraph at lines 411--412
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 413--414
+
+ []
+
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 418.
 [24
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 419.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 418.
  (./project_final.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 419.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 419.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 418.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 418.
 Package rerunfilecheck Info: File `project_final.out' has not changed.
-(rerunfilecheck)             Checksum: 9BF7E997D31714688A387A1A45AAABD4;3339.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 419.
+(rerunfilecheck)             Checksum: 12AA9DFBCF50AEE5F01805FB2F9816CF;3263.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 418.
  ) 
 Here is how much of TeX's memory you used:
- 6606 strings out of 493029
- 99312 string characters out of 6136233
+ 6604 strings out of 493029
+ 99288 string characters out of 6136233
  189629 words of memory out of 5000000
- 10007 multiletter control sequences out of 15000+600000
+ 10006 multiletter control sequences out of 15000+600000
  9930 words of font info for 35 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 36i,6n,41p,904b,389s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 36i,6n,41p,723b,389s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/shar
 e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/share/texli
@@ -1011,10 +1006,10 @@ ype1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
 lic/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
 sfonts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts
 /cm/cmtt10.pfb>
-Output written on project_final.pdf (25 pages, 180932 bytes).
+Output written on project_final.pdf (25 pages, 180874 bytes).
 PDF statistics:
- 438 PDF objects out of 1000 (max. 8388607)
- 392 compressed objects within 4 object streams
- 83 named destinations out of 1000 (max. 500000)
- 369 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 433 PDF objects out of 1000 (max. 8388607)
+ 387 compressed objects within 4 object streams
+ 82 named destinations out of 1000 (max. 500000)
+ 361 words of extra memory for PDF output out of 10000 (max. 10000000)
 
